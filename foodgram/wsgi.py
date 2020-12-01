@@ -1,5 +1,5 @@
 """
-WSGI config for 222 project.
+WSGI config for foodgram project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -10,7 +10,10 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from dotenv import load_dotenv
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '222.settings')
+load_dotenv()
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodgram.settings')
 
 application = get_wsgi_application()

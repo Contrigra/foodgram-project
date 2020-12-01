@@ -3,9 +3,13 @@
 import os
 import sys
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '222.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodgram.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
