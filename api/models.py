@@ -12,10 +12,11 @@ class Ingredient(models.Model):
     The ingredient model for recipes
     """
 
-    title = models.CharField(max_length=250)
-    dimension = models.ForeignKey(Dimension,null=True,
-                                 on_delete=models.SET_NULL)
-    amount = models.FloatField(blank=True)
+    title = models.CharField(max_length=256)
+    measure = models.CharField(max_length=64, blank=True)
+
+    def __str__(self):
+        return f'{self.title}, {self.measure}'
 
 
 class Recipe(models.Model):
@@ -23,7 +24,7 @@ class Recipe(models.Model):
     The recipe model, ingredients field is connected to Ingredient model.
     With a subclass of tags
     """
-
+ # TODO связь с ингредиентом через другую модель
     class TimeTag(models.TextChoices):
         BREAKFAST = 'Завтрак'
         LUNCH = 'Обед'
