@@ -1,9 +1,11 @@
 from django.db import models
+
 from users.models import User
 
 
 class Dimension(models.Model):
     dimension = models.CharField(max_length=25, unique=True)
+
 
 # TODO импорт фикстур
 
@@ -24,7 +26,8 @@ class Recipe(models.Model):
     The recipe model, ingredients field is connected to Ingredient model.
     With a subclass of tags
     """
- # TODO связь с ингредиентом через другую модель
+
+    # TODO связь с ингредиентом через другую модель
     class TimeTag(models.TextChoices):
         BREAKFAST = 'Завтрак'
         LUNCH = 'Обед'
