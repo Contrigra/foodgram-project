@@ -5,7 +5,9 @@ from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
-# TODO шифрование пароля в форме
+# TODO шифрование пароля в форме, сделать на основе UserCreationForm?
+#  Почитать про неё подробно, про её кастомизацию, там наверное есть
+#  шифрование пароля
 class CreationForm(forms.ModelForm):
     class Meta:
         model = User
