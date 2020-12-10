@@ -1,10 +1,19 @@
 from django.contrib import admin
+
 from .models import Ingredient
-# Register your models here.
+from .models import Recipe
+from .models import RecipeIngredient
 
 
-class IngredientAdmin(admin.ModelAdmin):
-    # TODO customization
-    pass
+class RecipeIngredientInline(admin.TabularInline):
+    model = Recipe.ingredients.through
+    extra = 1
+
+
+class RecipeAdmin(admin.ModelAdmin):
+    inlines = (RecipeIngredientInline,)
+
 
 admin.site.register(Ingredient)
+admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(RecipeIngredient)

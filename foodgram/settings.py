@@ -132,3 +132,6 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
+
+# TODO должен переводиться на профиль
+LOGIN_REDIRECT_URL = '/'
