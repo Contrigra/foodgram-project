@@ -10,7 +10,6 @@ def sign_up_view(request):
     context = {}
     form = CreationForm(request.POST or None)
     if request.method == "POST":
-        print(form)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -18,3 +17,11 @@ def sign_up_view(request):
 
     context['form'] = form
     return render(request, 'registration/sign_up.html', context)
+
+
+    # TODO
+def password_change_view(request):
+    pass
+
+def password_reset_view(request):
+    pass

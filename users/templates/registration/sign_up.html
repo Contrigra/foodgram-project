@@ -69,10 +69,25 @@
             <div class="form__group">
                 <label for="id_password" class="form__label">Пароль</label>
                 <div class="form__field-group">
-                    <input type="password" name="password" id="id_password"
+                    <input type="password" name="password1" id="id_password"
                            class="form__input">
-                    {% if form.password.errors %}
-                        {% for error in form.password.errors %}
+                    {% if form.password1.errors %}
+                        {% for error in form.password1.errors %}
+                        <span class="form__error">{{ error }}</span>
+                        {% endfor %}
+
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form__group">
+                <label for="id_password" class="form__label">Повторите
+                    пароль</label>
+                <div class="form__field-group">
+                    <input type="password" name="password2" id="id_password"
+                           class="form__input">
+                    {% if form.password2.errors %}
+                        {% for error in form.password2.errors %}
                         <span class="form__error">{{ error }}</span>
                         {% endfor %}
 

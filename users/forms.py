@@ -8,14 +8,14 @@ User = get_user_model()
 # TODO шифрование пароля в форме, сделать на основе UserCreationForm?
 #  Почитать про неё подробно, про её кастомизацию, там наверное есть
 #  шифрование пароля
-class CreationForm(forms.ModelForm):
-    class Meta:
+class CreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("first_name", "username", "email", 'password')
+        fields = ("first_name", "username", "email")
 
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        password_validation.validate_password(password)
-
-        return password
+    # def clean_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     password_validation.validate_password(password)
+    #
+    #     return password
 
