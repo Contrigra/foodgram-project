@@ -5,4 +5,4 @@ from django.shortcuts import render
 # страницы для залогинненного и не залогиненного юзера.
 
 def index_view(request):
-    return render(request, 'indexNotAuth.html')
+    return render(request, 'index.html')
