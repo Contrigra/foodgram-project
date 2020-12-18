@@ -1,10 +1,10 @@
 from django.contrib.auth import login
-# Create your views here.
-from users.forms import CreationForm
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.urls import reverse_lazy
+from users.forms import CreationForm
+from django.contrib.auth import logout as auth_logout
 
-# TODO static for account/login
 
 def sign_up_view(request):
     context = {}
@@ -19,9 +19,3 @@ def sign_up_view(request):
     return render(request, 'registration/sign_up.html', context)
 
 
-    # TODO
-def password_change_view(request):
-    pass
-
-def password_reset_view(request):
-    pass
