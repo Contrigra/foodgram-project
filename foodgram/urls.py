@@ -17,7 +17,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
 from .views import index_view
 
 urlpatterns = [
@@ -25,7 +24,7 @@ urlpatterns = [
     path('accounts/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', index_view, name='index'),
-    path('api/', include('api.urls')),
+    path('recipes/', include('api.urls')),
 ]
 
 if settings.DEBUG:

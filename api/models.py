@@ -39,7 +39,6 @@ class Recipe(models.Model):
                            default=TimeTag.BREAKFAST)
     cooking_time = models.IntegerField()
 
-    # TODO slug, оставить?
     slug = models.SlugField(unique=True)
     pub_date = models.DateTimeField('date published', auto_now_add=True,
                                     db_index=True)

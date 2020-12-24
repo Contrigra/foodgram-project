@@ -1,7 +1,7 @@
 from django.urls import path
 
-from . import views
+from api.views import create_recipe_view
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('create-recipe/', create_recipe_view, name='create_recipe'),
 ]
