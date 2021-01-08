@@ -1,6 +1,7 @@
 from django.db import models
 
 from users.models import User
+from django.core.validators import MinValueValidator
 
 
 class Ingredient(models.Model):
@@ -8,11 +9,18 @@ class Ingredient(models.Model):
     The ingredient model for recipes
     """
 
-    title = models.CharField(max_length=256)
+    title = models.CharField(max_length=256, unique=True)
     measure = models.CharField(max_length=64, blank=True)
+
+    class Meta:
+        verbose_name = 'Ingredient'
+        verbose_name_plural = 'Ingredients'
+        ordering = ['title']
 
     def __str__(self):
         return f'{self.title}, {self.measure}'
+
+
 
 
 class Recipe(models.Model):
@@ -55,4 +63,8 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    weight = models.PositiveSmallIntegerField(
+        verbose_name='ingredient weight', null=False,
+        validators=[MinValueValidator(1)], default=10,
+        help_text='Add needed weight for the recipe'
+    )
