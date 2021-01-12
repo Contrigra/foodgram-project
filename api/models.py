@@ -9,7 +9,7 @@ class Ingredient(models.Model):
     The ingredient model for recipes
     """
 
-    title = models.CharField(max_length=256, unique=True)
+    title = models.CharField(max_length=256)
     measure = models.CharField(max_length=64, blank=True)
 
     class Meta:
