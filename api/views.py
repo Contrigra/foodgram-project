@@ -1,14 +1,10 @@
-from django.shortcuts import render
-from .forms import RecipeForm
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from api.models import Ingredient
-from api.models import Recipe
-from django.db.models import F
-from urllib.parse import unquote
-from django.http import HttpResponse
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.urls import reverse
 
+from api.models import Ingredient
+from .forms import RecipeForm
 
 
 @login_required
@@ -17,16 +13,22 @@ def create_recipe_view(request):
     View function for a recipe creation page
     """
 
+    # TODO сделать, чтобы работал TAG, Завтрак, обед, ужин.
+    # TAG не высылается
     if request.method == 'POST':
         form = RecipeForm(request.POST or None, files=request.FILES or None)
+
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.save()
             return reverse('index')
+
+        print(form.errors)
+
     form = RecipeForm()
 
-    return render(request, 'formRecipe.html', {'form': form})
+    return render(request, 'formRecipe.html', {'form': form, })
 
 
 def list_ingredients_view(request):
