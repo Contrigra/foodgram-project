@@ -1,7 +1,7 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from users.models import User
-from django.core.validators import MinValueValidator
 
 
 class Ingredient(models.Model):
@@ -21,6 +21,10 @@ class Ingredient(models.Model):
         return f'{self.title}, {self.measure}'
 
 
+class TimeTag(models.Model):
+    breakfast = models.BooleanField(default=False, verbose_name='Завтрак')
+    lunch = models.BooleanField(default=False, verbose_name='Обед')
+    dinner = models.BooleanField(default=False, verbose_name='Ужин')
 
 
 class Recipe(models.Model):
@@ -28,11 +32,6 @@ class Recipe(models.Model):
     The recipe model, ingredients field is connected to Ingredient model.
     With a subclass of tags
     """
-
-    class TimeTag(models.TextChoices):
-        BREAKFAST = 'Завтрак'
-        LUNCH = 'Обед'
-        DINNER = 'Ужин'
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
@@ -43,8 +42,8 @@ class Recipe(models.Model):
                                          verbose_name='Ингредиенты')
 
     image = models.ImageField(upload_to='media/recipes', blank=True, null=True)
-    tag = models.CharField(max_length=10, choices=TimeTag.choices,
-                           default=TimeTag.BREAKFAST)
+    tag = models.ManyToManyField(TimeTag)
+
     cooking_time = models.IntegerField()
 
     slug = models.SlugField(unique=True)

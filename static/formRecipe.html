@@ -13,6 +13,7 @@
 
                 <div class="form__group">
                     {% csrf_token %}
+
                     <label for="id_title" class="form__label">Название
                         рецепта</label>
                     <div class="form__field-group">
@@ -21,6 +22,7 @@
                         <span class="form__error"></span>
                     </div>
                 </div>
+            {{ form }}
                 <div class="form__group">
                     <p class="form__label">Теги</p>
                     <div class="form__field-group">
