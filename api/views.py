@@ -12,13 +12,16 @@ def create_recipe_view(request):
     """
     View function for a recipe creation page
     """
-    choices = {'breakfast': ('Завтрак', 'Breakfast'),
-               'lunch': ('Обед', 'Lunch '),
-               'dinner': ('Ужин', 'Dinner')}
+    choices = {'breakfast': 'breakfast',
+               'lunch': 'lunch',
+               'dinner': 'dinner'}
     # TODO сделать, чтобы работал TAG, Завтрак, обед, ужин.
     # TAG не высылается
+    #
+
 
     if request.method == 'POST':
+
         tag = []
         for x in request.POST:
             if x in choices:
@@ -28,7 +31,13 @@ def create_recipe_view(request):
         post['tag'] = tag
         request.POST = post
 
+        print(request.POST)
+
         form = RecipeForm(request.POST or None, files=request.FILES or None)
+
+
+
+        print(request.POST)
 
         # TODO посмотреть какие есть опции выбора
         if form.is_valid():
@@ -40,7 +49,6 @@ def create_recipe_view(request):
         print(form.errors)
 
     form = RecipeForm()
-    # print(form)
 
     return render(request, 'formRecipe.html', {'form': form, })
 

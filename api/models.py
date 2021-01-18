@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
+from taggit.managers import TaggableManager
 from users.models import User
 
 
@@ -42,7 +42,7 @@ class Recipe(models.Model):
                                          verbose_name='Ингредиенты')
 
     image = models.ImageField(upload_to='media/recipes', blank=True, null=True)
-    tag = models.ManyToManyField(TimeTag)
+    tag = TaggableManager()
 
     cooking_time = models.IntegerField()
 
