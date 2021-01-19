@@ -27,6 +27,8 @@ class TimeTag(models.Model):
     dinner = models.BooleanField(default=False, verbose_name='Ужин')
 
 
+# TODO снести базу и сделать по новой импротировав все данные из фикстур
+
 class Recipe(models.Model):
     """
     The recipe model, ingredients field is connected to Ingredient model.
@@ -34,19 +36,19 @@ class Recipe(models.Model):
     """
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=256)
+    title = models.CharField(max_length=256, unique=True)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',
                                          blank=True,
                                          related_name='ingredients',
                                          verbose_name='Ингредиенты')
 
-    image = models.ImageField(upload_to='media/recipes', blank=True, null=True)
+    image = models.ImageField(upload_to='recipes', blank=True, null=True)
     tag = TaggableManager()
 
-    cooking_time = models.IntegerField()
+    time = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=256)
     pub_date = models.DateTimeField('date published', auto_now_add=True,
                                     db_index=True)
     description = models.TextField()

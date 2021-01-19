@@ -43,7 +43,7 @@ function formEntries (form) {
       continue
     }
 
-    if (element.type === 'file') {
+    if (element.type === 'image') {
       for (var j = 0; j < element.files.length; j++) {
         entries.push([element.name, element.files[j]])
       }

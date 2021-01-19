@@ -966,7 +966,7 @@ module.exports = function required(port, protocol) {
     case 'gopher':
     return port !== 70;
 
-    case 'file':
+    case 'image':
     return false;
   }
 

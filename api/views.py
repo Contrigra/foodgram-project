@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
-
 from api.models import Ingredient
 from .forms import RecipeForm
+from slugify import slugify
 
 
 @login_required
@@ -12,41 +12,41 @@ def create_recipe_view(request):
     """
     View function for a recipe creation page
     """
-    choices = {'breakfast': 'breakfast',
+    _choices = {'breakfast': 'breakfast',
                'lunch': 'lunch',
                'dinner': 'dinner'}
-    # TODO сделать, чтобы работал TAG, Завтрак, обед, ужин.
-    # TAG не высылается
-    #
-
 
     if request.method == 'POST':
+        # transforming received tag checkbox to acceptable input for the form
+        # Should I create another function for this or this is acceptable
+        # since it's the necessary part of recipe creation? Requires a
+        # space delimited string
+        _tag = ''
+        for x in _choices:
+            if x in request.POST:
+                _tag += ' ' + _choices[x]
 
-        tag = []
-        for x in request.POST:
-            if x in choices:
-                tag.append(choices[x])
-
+        print(_tag)
         post = request.POST.copy()
-        post['tag'] = tag
+        post['tag'] = _tag
+
         request.POST = post
-
-        print(request.POST)
-
         form = RecipeForm(request.POST or None, files=request.FILES or None)
 
 
-
-        print(request.POST)
-
-        # TODO посмотреть какие есть опции выбора
+        # TODO сделать загрузку картинок и времени тэги
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
+            recipe.slug = slugify(recipe.title, only_ascii=True)
             recipe.save()
-            return reverse('index')
+            # This line is needed to save the tags.
+            form.save_m2m()
 
-        print(form.errors)
+            return redirect(to='/', username=request.user.username,
+                            permanent=True)
+
+
 
     form = RecipeForm()
 
