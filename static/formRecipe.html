@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Зарегистрироваться{% endblock %}
+{% block title %}Создать рецепт{% endblock %}
 {% load static %}
 {% block content %}
     <main class="main container">
-        {% load static %}
+
         <link rel="stylesheet" href={% static "pages/form.css" %}>
         <div class="main__header">
             <h1 class="main__title">Создание рецепта</h1>
@@ -79,7 +79,7 @@
                         <span class="form__error">
                     {% if form.non_field_errors %}
                         {% for error in form.non_field_errors %}
-                            {% if error == 'Add at least one ingredient' %}
+                            {% if error == 'Необходимо добавить хотя бы один ингредиент' %}
                                 <div class="non-field-errors">
                                 <p class="form-error">{{ error }}</p>
                             </div>
@@ -108,13 +108,18 @@
                         <span class="form__error"></span>
                     </div>
                 </div>
+
                 <div class="form__group">
                     <span class="form__label">Загрузить фото</span>
                     <div class="form__field-group">
-                        <input type="file" name="image" id="id_file">
+                        <input type="file" name="image"
+                               id="id_file" class="form__file-button">
                         <span class="form__error"></span>
                     </div>
                 </div>
+
+
+
                 <div class="form__footer">
                     <button class="button button_style_blue">Создать рецепт
                     </button>
