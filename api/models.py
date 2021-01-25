@@ -67,5 +67,5 @@ class RecipeIngredient(models.Model):
     weight = models.PositiveSmallIntegerField(
         verbose_name='ingredient weight', null=False,
         validators=[MinValueValidator(1)], default=10,
-        help_text='Add needed weight for the recipe'
+        help_text='Добавьте необходимое количество ингредиентов'
     )

@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
-from api.models import Ingredient
-from .forms import RecipeForm
+from api.models import Ingredient, Recipe, RecipeIngredient
+from .forms import RecipeForm, RecipeIngredientForm
 
 
 @login_required
@@ -30,26 +30,32 @@ def create_recipe_view(request):
         for x in _choices:
             if x in request.POST:
                 _tag += ' ' + _choices[x]
-
         post = request.POST.copy()
         post['tag'] = _tag
         request.POST = post
+
+        ingredient_form = RecipeIngredientForm(request.POST or None)
         form = RecipeForm(request.POST or None, request.FILES or None)
 
-        if form.is_valid():
+# TODO адаптировать данные ингредиентов и форму.
+        if form.is_valid() and ingredient_form.is_valid():
             recipe = form.save(commit=False)
+            recipe_ingredients = ingredient_form.save(commit=False)
             recipe.author = request.user
             recipe.slug = slugify(recipe.title, only_ascii=True)
+            recipe_ingredients.recipe = recipe
             recipe.save()
             # This line is needed to save the tags.
             form.save_m2m()
 
+            # TODO redirect to the single page of the recipe
             return redirect(to='/', username=request.user.username,
                             permanent=True)
 
     form = RecipeForm()
+    ingredient_form = RecipeIngredientForm()
 
-    return render(request, 'formRecipe.html', {'form': form, })
+    return render(request, 'formRecipe.html', {'form': form, 'ingredient_form': ingredient_form})
 
 
 def list_ingredients_view(request):
@@ -63,3 +69,11 @@ def list_ingredients_view(request):
     ingredients = list(Ingredient.objects.filter(
         title__istartswith=text).values('title', 'measure'))
     return JsonResponse(ingredients, safe=False)
+
+# TODO сделать страницу
+def single_recipe_view(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    recipe_ingredients = recipe.ingredients.all()
+    print(recipe_ingredients)
+    return render(request, 'singlePage.html', {'slug':slug, 'recipe': recipe })
+
