@@ -42,12 +42,13 @@ def create_recipe_view(request):
 
             recipe.save()
             form.save_m2m()
-            #
+            # due to intermediatory model for many-to-many relationship of a
+            # Recippe and Ingredients, you have to manually create objects of
+            # the said third model.
             get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
 
-            # TODO redirect to the single page of the recipe
-            return redirect(to='/', username=request.user.username,
-                            permanent=True)
+            return redirect(to='single_recipe',
+                            permanent=True, slug=recipe.slug)
 
     form = RecipeForm()
 
@@ -67,9 +68,9 @@ def list_ingredients_view(request):
     return JsonResponse(ingredients, safe=False)
 
 
-# TODO сделать страницу
+# TODO Доделать шаблон.
+
 def single_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     recipe_ingredients = recipe.ingredients.all()
-    print(recipe_ingredients)
     return render(request, 'singlePage.html', {'slug': slug, 'recipe': recipe})

@@ -11,7 +11,6 @@ def get_and_save_RecipeIngredients(ingredients, recipe_pk):
     arr = []
     i = 1
     for ingredient in ingredients.keys():
-        print(ingredient.startswith('name'))
         if ingredient.startswith('name'):
             arr.append([ingredients[ingredient], ingredients[f'valueIngredient_{i}']])
             i += 1
