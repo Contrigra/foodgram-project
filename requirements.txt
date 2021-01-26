@@ -1,3 +1,4 @@
+slugify
 aiohttp==3.6.2
 altgraph==0.17
 appdirs==1.4.3

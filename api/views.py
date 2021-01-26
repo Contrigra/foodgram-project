@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
-from api.models import Ingredient, Recipe, RecipeIngredient
-from .forms import RecipeForm, RecipeIngredientForm
+from api.models import Ingredient, Recipe
+from .forms import RecipeForm
+from .utils import get_and_save_RecipeIngredients
 
 
 @login_required
@@ -25,7 +26,6 @@ def create_recipe_view(request):
         # Should I create another function for this or this is acceptable
         # since it's the necessary part of the recipe creation? And will be
         # used only here?
-
         _tag = ''
         for x in _choices:
             if x in request.POST:
@@ -34,28 +34,24 @@ def create_recipe_view(request):
         post['tag'] = _tag
         request.POST = post
 
-        ingredient_form = RecipeIngredientForm(request.POST or None)
         form = RecipeForm(request.POST or None, request.FILES or None)
-
-# TODO адаптировать данные ингредиентов и форму.
-        if form.is_valid() and ingredient_form.is_valid():
+        if form.is_valid():
             recipe = form.save(commit=False)
-            recipe_ingredients = ingredient_form.save(commit=False)
             recipe.author = request.user
             recipe.slug = slugify(recipe.title, only_ascii=True)
-            recipe_ingredients.recipe = recipe
+
             recipe.save()
-            # This line is needed to save the tags.
             form.save_m2m()
+            #
+            get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
 
             # TODO redirect to the single page of the recipe
             return redirect(to='/', username=request.user.username,
                             permanent=True)
 
     form = RecipeForm()
-    ingredient_form = RecipeIngredientForm()
 
-    return render(request, 'formRecipe.html', {'form': form, 'ingredient_form': ingredient_form})
+    return render(request, 'formRecipe.html', {'form': form, })
 
 
 def list_ingredients_view(request):
@@ -67,13 +63,13 @@ def list_ingredients_view(request):
 
     text = request.GET.get('query')
     ingredients = list(Ingredient.objects.filter(
-        title__istartswith=text).values('title', 'measure'))
+        name__istartswith=text).values('name', 'units'))
     return JsonResponse(ingredients, safe=False)
+
 
 # TODO сделать страницу
 def single_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     recipe_ingredients = recipe.ingredients.all()
     print(recipe_ingredients)
-    return render(request, 'singlePage.html', {'slug':slug, 'recipe': recipe })
-
+    return render(request, 'singlePage.html', {'slug': slug, 'recipe': recipe})
