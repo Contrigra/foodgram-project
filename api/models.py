@@ -69,3 +69,6 @@ class RecipeIngredient(models.Model):
         validators=[MinValueValidator(1)], default=10,
         help_text='Добавьте необходимое количество ингредиентов'
     )
+
+    def __str__(self):
+        return f'{self.recipe.title} - {self.ingredient.name} {self.value} {self.ingredient.units},'

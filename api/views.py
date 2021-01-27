@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
-from api.models import Ingredient, Recipe
+from api.models import Ingredient, Recipe, RecipeIngredient
 from .forms import RecipeForm
 from .utils import get_and_save_RecipeIngredients
 
@@ -72,5 +72,8 @@ def list_ingredients_view(request):
 
 def single_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    recipe_ingredients = recipe.ingredients.all()
-    return render(request, 'singlePage.html', {'slug': slug, 'recipe': recipe})
+    recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+    return render(request, 'singlePage.html', {
+        'slug': slug,
+        'recipe': recipe,
+        'recipe_ingredients': recipe_ingredients})
