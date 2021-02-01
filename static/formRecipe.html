@@ -6,7 +6,8 @@
 
         <link rel="stylesheet" href={% static "pages/form.css" %}>
         <div class="main__header">
-            <h1 class="main__title">Создание рецепта</h1>
+            <h1 class="main__title">{% if not edit %}Создание рецепта {% else %}Редактирование рецепта</h1>
+            {% endif %}
         </div>
         <div class="form-container">
             <form class="form" method="post" enctype="multipart/form-data">
@@ -18,7 +19,7 @@
                         рецепта</label>
                     <div class="form__field-group">
                         <input type="text" id="id_title" name="title"
-                               class="form__input">
+                               class="form__input" >
                         <span class="form__error"></span>
                     </div>
                 </div>
@@ -27,7 +28,7 @@
                     <div class="form__field-group">
                         <div class="tags">
                             <div class="tags__item">
-                                <input type="checkbox" name="breakfast" id="id_breakfast" class="tags__checkbox tags__checkbox_style_orange">
+                                <input type="checkbox" name="breakfast" id="id_breakfast" class="tags__checkbox tags__checkbox_style_orange" {% if 'breakfast' in form.initial.tag %} checked {% endif %}>
                                 <label for="id_breakfast" class="tags__label">Завтрак</label>
                             </div>
                             <div class="tags__item">
@@ -58,19 +59,21 @@
                                class="form__input" min="0">
                         <label for="cantidad" class="form__label"
                                id="cantidadVal"></label>
-                            {% if message %}
-                                <div class="non-field-errors" style="color: red">{{ message }}</div>{% endif %}
+
+
+                                <div class="non-field-errors" style="color: red"></div>
                         </div>
 
                         <div class="form__field-group-ingredientes-container">
                             {% if edit %}
-                                {% for ingredient_item in recipe.recipe_ingredient.all %}
+                                {% for ingredient_item in recipe_ingredients %}
+
                                     <div class="form__field-item-ingredient" id="ing_{{ ingredient_item.id }}">
-                                        <span> {{ ingredient_item.ingredient.name }}</span>
+                                        <span> {{ ingredient_item.ingredient.name }} {{ ingredient_item.value }}{{ ingredient_item.ingredient.units }} </span>
                                         <span class="form__field-item-delete"></span>
                                         <input id="nameIngredient_{{ ingredient_item.id }}" name="nameIngredient_{{ ingredient_item.id }}" type="hidden" value="{{ ingredient_item.ingredient.name }}">
-                                        <input id="valueIngredient_{{ ingredient_item.id }}" name="valueIngredient_{{ ingredient_item.id }}" type="hidden" value="{{ ingredient_item.weight }}">
-                                        <input id="unitsIngredient_{{ ingredient_item.id }}" name="unitsIngredient_{{ ingredient_item.id }}" type="hidden" value="{{ ingredient_item.ingredient.measure }}">
+                                        <input id="valueIngredient_{{ ingredient_item.id }}" name="valueIngredient_{{ ingredient_item.id }}" type="hidden" value="{{ ingredient_item.value }}">
+                                        <input id="unitsIngredient_{{ ingredient_item.id }}" name="unitsIngredient_{{ ingredient_item.id }}" type="hidden" value="{{ ingredient_item.ingredient.units }}">
                                     </div>
                                 {% endfor %}
                             {% endif %}

@@ -3,9 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
-from api.models import Ingredient, Recipe, RecipeIngredient
+from api.models import Ingredient, Recipe, RecipeIngredient, User
 from .forms import RecipeForm
-from .utils import get_and_save_RecipeIngredients
+from .utils import get_and_save_RecipeIngredients, populate_tags
 
 
 @login_required
@@ -14,26 +14,10 @@ def create_recipe_view(request):
     View function for a recipe creation page. Parses tags from checkboxes
     input, prepares the data for the tag field.
     """
-    _choices = {'breakfast': 'breakfast',
-                'lunch': 'lunch',
-                'dinner': 'dinner'}
 
     if request.method == 'POST':
-        # transforming received tag checkbox to acceptable (
-        # space-delimited string) input for the form and modify POST request
-        # to include acceptable field data.
 
-        # Should I create another function for this or this is acceptable
-        # since it's the necessary part of the recipe creation? And will be
-        # used only here?
-        _tag = ''
-        for x in _choices:
-            if x in request.POST:
-                _tag += ' ' + _choices[x]
-        post = request.POST.copy()
-        post['tag'] = _tag
-        request.POST = post
-
+        request = populate_tags(request)
         form = RecipeForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             recipe = form.save(commit=False)
@@ -68,12 +52,59 @@ def list_ingredients_view(request):
     return JsonResponse(ingredients, safe=False)
 
 
-# TODO Доделать шаблон.
-
 def single_recipe_view(request, slug):
+    """
+    Renders out a single page recipe page. Obtaining tags and list of
+    ingredients of M2M relationship and passing it to the template.
+    """
     recipe = get_object_or_404(Recipe, slug=slug)
     recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+    tags = recipe.tag.names()
+
     return render(request, 'singlePage.html', {
         'slug': slug,
         'recipe': recipe,
-        'recipe_ingredients': recipe_ingredients})
+        'recipe_ingredients': recipe_ingredients,
+        'tags': tags, })
+
+
+# TODO make form populated with saved data. Make proper rendering in the HTML template
+
+@login_required
+def recipe_edit_view(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    author = get_object_or_404(User, username=recipe.author)
+    edit = True
+
+    # Only the owner should have permission to edit a recipe
+    if request.user != author:
+        return redirect("single_recipe",
+                        slug=slug)
+
+    request = populate_tags(request)
+    form = RecipeForm(request.POST or None, files=request.FILES or None,
+                      instance=recipe)
+
+    if request.method == "POST":
+
+        if form.is_valid():
+            recipe = form.save(commit=False)
+            recipe.author = request.user
+            recipe.slug = slugify(recipe.title, only_ascii=True)
+            recipe.save()
+            form.save_m2m()
+            # due to intermediatory model for many-to-many relationship of a
+            # Recipe and Ingredients, you have to manually create objects of
+            # the said third model.
+            get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
+
+            return redirect(to='single_recipe',
+                            permanent=True, slug=recipe.slug)
+
+    recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+
+    return render(
+        request, "formRecipe.html",
+        {'form': form, 'recipe': recipe, 'edit': edit,
+         'recipe_ingredients': recipe_ingredients},
+    )

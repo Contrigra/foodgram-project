@@ -21,14 +21,6 @@ class Ingredient(models.Model):
         return f'{self.name}, {self.units}'
 
 
-class TimeTag(models.Model):
-    breakfast = models.BooleanField(default=False, verbose_name='Завтрак')
-    lunch = models.BooleanField(default=False, verbose_name='Обед')
-    dinner = models.BooleanField(default=False, verbose_name='Ужин')
-
-
-# TODO снести базу и сделать по новой импротировав все данные из фикстур
-
 class Recipe(models.Model):
     """
     The recipe model, ingredients field is connected to Ingredient model.

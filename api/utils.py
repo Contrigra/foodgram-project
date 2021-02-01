@@ -3,23 +3,43 @@ from api.models import RecipeIngredient, Ingredient
 
 def get_and_save_RecipeIngredients(ingredients, recipe_pk):
     '''
-    parse and create RecipeIngredients for manytomany relationship via the third model.
-    :param ingredients: request.POST array with ingredient names in it for parsing and recipe_PK for database population
+    parse and create RecipeIngredients for manytomany relationship via the
+    third model.
+    :param ingredients: request.POST array with ingredient names in it for
+    parsing and recipe_PK for database population
     :return: None
     '''
 
     arr = []
     i = 1
     for ingredient in ingredients.keys():
-        if ingredient.startswith('name'):
-            arr.append([ingredients[ingredient], ingredients[f'valueIngredient_{i}']])
+        if ingredient.startswith('nameIngredient_'):
+            arr.append(
+                [ingredients[ingredient], ingredients[f'valueIngredient_{i}']])
             i += 1
 
     for name, value in arr:
         ingredient = Ingredient.objects.get(name__exact=name)
         obj = RecipeIngredient(recipe_id=recipe_pk, value=value,
-                                              ingredient_id=ingredient.pk)
+                               ingredient_id=ingredient.pk)
         obj.save()
 
 
+def populate_tags(request):
+    """
+    Returns a new request with updated request.POSt with correctly populated
+    tag data (space delimited string)
+    """
+    _choices = {'breakfast': 'breakfast',
+                'lunch': 'lunch',
+                'dinner': 'dinner'}
 
+    _tag = ''
+    for x in _choices:
+        if x in request.POST:
+            _tag += ' ' + _choices[x]
+    post = request.POST.copy()
+    post['tag'] = _tag
+    request.POST = post
+
+    return request
