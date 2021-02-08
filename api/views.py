@@ -5,7 +5,8 @@ from slugify import slugify
 
 from api.models import Ingredient, Recipe, RecipeIngredient, User
 from .forms import RecipeForm
-from .utils import get_and_save_RecipeIngredients, populate_tags
+from .utils import get_and_save_RecipeIngredients, populate_tags, \
+    get_tag_list
 
 
 @login_required
@@ -76,7 +77,7 @@ def recipe_edit_view(request, slug):
     author = get_object_or_404(User, username=recipe.author)
     edit = True
 
-    # Only the owner should have permission to edit a recipe
+    # Only the owner should have the permission to edit a recipe
     if request.user != author:
         return redirect("single_recipe",
                         slug=slug)
@@ -85,6 +86,8 @@ def recipe_edit_view(request, slug):
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe)
 
+    # Get a list of tags for proper tag rendering at the template level
+    tags = get_tag_list(form)
     if request.method == "POST":
 
         if form.is_valid():
@@ -106,5 +109,5 @@ def recipe_edit_view(request, slug):
     return render(
         request, "formRecipe.html",
         {'form': form, 'recipe': recipe, 'edit': edit,
-         'recipe_ingredients': recipe_ingredients},
+         'recipe_ingredients': recipe_ingredients, 'tags': tags},
     )

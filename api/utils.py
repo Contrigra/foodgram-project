@@ -11,12 +11,11 @@ def get_and_save_RecipeIngredients(ingredients, recipe_pk):
     '''
 
     arr = []
-    i = 1
     for ingredient in ingredients.keys():
         if ingredient.startswith('nameIngredient_'):
+            _, i = ingredient.split('_')
             arr.append(
                 [ingredients[ingredient], ingredients[f'valueIngredient_{i}']])
-            i += 1
 
     for name, value in arr:
         ingredient = Ingredient.objects.get(name__exact=name)
@@ -43,3 +42,21 @@ def populate_tags(request):
     request.POST = post
 
     return request
+
+def get_tag_list(form):
+    """
+    A simple list of tags in a form of strings for proper render at the
+    template level
+    :param recipe form:
+    :return a list of tags as strings:
+    """
+    _choices = {'breakfast': 'breakfast',
+                'lunch': 'lunch',
+                'dinner': 'dinner'}
+
+    tags = []
+    for tag in form.initial['tag']:
+        if tag.slug in _choices:
+            tags.append(_choices[tag.slug])
+
+    return tags

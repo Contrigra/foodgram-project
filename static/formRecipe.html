@@ -2,6 +2,8 @@
 {% block title %}Создать рецепт{% endblock %}
 {% load static %}
 {% block content %}
+    {{ form.initial }}
+
     <main class="main container">
 
         <link rel="stylesheet" href={% static "pages/form.css" %}>
@@ -11,7 +13,6 @@
         </div>
         <div class="form-container">
             <form class="form" method="post" enctype="multipart/form-data">
-
                 <div class="form__group">
                     {% csrf_token %}
 
@@ -19,26 +20,28 @@
                         рецепта</label>
                     <div class="form__field-group">
                         <input type="text" id="id_title" name="title"
-                               class="form__input" >
+                               class="form__input" value="{{ form.initial.title }}" >
                         <span class="form__error"></span>
                     </div>
                 </div>
+            {# TODO рендер тегов из инишиала #}
                 <div class="form__group">
                     <p class="form__label">Теги</p>
                     <div class="form__field-group">
                         <div class="tags">
                             <div class="tags__item">
-                                <input type="checkbox" name="breakfast" id="id_breakfast" class="tags__checkbox tags__checkbox_style_orange" {% if 'breakfast' in form.initial.tag %} checked {% endif %}>
+                                <input type="checkbox" name="breakfast" id="id_breakfast" class="tags__checkbox tags__checkbox_style_orange" {% if 'breakfast' in tags %}checked {% endif %}>
                                 <label for="id_breakfast" class="tags__label">Завтрак</label>
                             </div>
                             <div class="tags__item">
-                                <input type="checkbox" name="lunch" id="id_lunch" class="tags__checkbox tags__checkbox_style_green" checked>
+                                <input type="checkbox" name="lunch" id="id_lunch" class="tags__checkbox tags__checkbox_style_green" {% if 'lunch' in tags %} checked {% endif %}>
                                 <label for="id_lunch" class="tags__label">Обед</label>
                             </div>
                             <div class="tags__item">
-                                <input type="checkbox" name="dinner" id="id_dinner" class="tags__checkbox tags__checkbox_style_purple" checked>
+                                <input type="checkbox" name="dinner" id="id_dinner" class="tags__checkbox tags__checkbox_style_purple" {% if 'dinner' in tags %} checked {% endif %}>
                                 <label for="id_dinner" class="tags__label">Ужин</label>
                             </div>
+
                         </div>
                         <span class="form__error"></span>
                     </div>
@@ -67,7 +70,6 @@
                         <div class="form__field-group-ingredientes-container">
                             {% if edit %}
                                 {% for ingredient_item in recipe_ingredients %}
-
                                     <div class="form__field-item-ingredient" id="ing_{{ ingredient_item.id }}">
                                         <span> {{ ingredient_item.ingredient.name }} {{ ingredient_item.value }}{{ ingredient_item.ingredient.units }} </span>
                                         <span class="form__field-item-delete"></span>
@@ -100,7 +102,7 @@
                         приготовления</label>
                     <div class="form__field-group form__field-group_time">
                         <input type="text" id="id_time" name="time"
-                               class="form__input">
+                               class="form__input" value="{{ form.initial.time }}">
                         <label for="id_time" class="form__label">минут</label>
                         <span class="form__error"></span>
                     </div>
@@ -108,17 +110,23 @@
                 <div class="form__group">
                     <label for="id_description" class="form__label">Описание</label>
                     <div class="form__field-group">
-                        <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
+                        <textarea name="description" id="id_description" rows="8" class="form__textarea">{{ form.initial.description }}</textarea>
                         <span class="form__error"></span>
                     </div>
                 </div>
 
+            {# TODO инишиал картинка и удаление рецепта #}
+
                 <div class="form__group">
                     <span class="form__label">Загрузить фото</span>
+                    {# TODO кажется шаблон не сделан как надо, хз как сделать #}
                     <div class="form__field-group">
+                        Сейчас: {{ form.initial.image }}
+
                         <input type="file" name="image"
                                id="id_file" class="form__file-button">
                         <span class="form__error"></span>
+
                     </div>
                 </div>
 
