@@ -2,10 +2,8 @@
 {% block title %}Создать рецепт{% endblock %}
 {% load static %}
 {% block content %}
-    {{ form.initial }}
 
     <main class="main container">
-
         <link rel="stylesheet" href={% static "pages/form.css" %}>
         <div class="main__header">
             <h1 class="main__title">{% if not edit %}Создание рецепта {% else %}Редактирование рецепта</h1>
@@ -15,7 +13,6 @@
             <form class="form" method="post" enctype="multipart/form-data">
                 <div class="form__group">
                     {% csrf_token %}
-
                     <label for="id_title" class="form__label">Название
                         рецепта</label>
                     <div class="form__field-group">
@@ -24,7 +21,6 @@
                         <span class="form__error"></span>
                     </div>
                 </div>
-            {# TODO рендер тегов из инишиала #}
                 <div class="form__group">
                     <p class="form__label">Теги</p>
                     <div class="form__field-group">
@@ -62,11 +58,8 @@
                                class="form__input" min="0">
                         <label for="cantidad" class="form__label"
                                id="cantidadVal"></label>
-
-
                                 <div class="non-field-errors" style="color: red"></div>
                         </div>
-
                         <div class="form__field-group-ingredientes-container">
                             {% if edit %}
                                 {% for ingredient_item in recipe_ingredients %}
@@ -115,7 +108,6 @@
                     </div>
                 </div>
 
-            {# TODO инишиал картинка и удаление рецепта #}
 
                 <div class="form__group">
                     <span class="form__label">Загрузить фото</span>
@@ -126,33 +118,16 @@
                         <input type="file" name="image"
                                id="id_file" class="form__file-button">
                         <span class="form__error"></span>
-
                     </div>
                 </div>
 
+            <div class="form__footer">
+                <button class="button button_style_blue">{% if edit %}Сохранить{% else %}Создать рецепт{% endif %}</button> <a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.slug %}" class="form__ingredient-link">Удалить</a>
+            </div>
 
-
-                <div class="form__footer">
-                    <button class="button button_style_blue">Создать рецепт
-                    </button>
-                </div>
             </form>
         </div>
 
-    {% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-{% endif %}
 
     </main>
 

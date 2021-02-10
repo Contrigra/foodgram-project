@@ -88,8 +88,8 @@ def recipe_edit_view(request, slug):
 
     # Get a list of tags for proper tag rendering at the template level
     tags = get_tag_list(form)
-    if request.method == "POST":
 
+    if request.method == "POST":
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
@@ -111,3 +111,18 @@ def recipe_edit_view(request, slug):
         {'form': form, 'recipe': recipe, 'edit': edit,
          'recipe_ingredients': recipe_ingredients, 'tags': tags},
     )
+
+
+def delete_recipe_view(request, slug):
+    """
+    Deletes recipe and its ingredients and redirects to index page
+    """
+
+    recipe = get_object_or_404(Recipe, slug=slug)
+    ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+    recipe.delete()
+    ingredients.delete()
+
+    return redirect(to='index')
+
+    # Deleting RecipeIngredients since they're unreachable from recipe object
