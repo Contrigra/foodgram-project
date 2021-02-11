@@ -122,7 +122,7 @@
                 </div>
 
             <div class="form__footer">
-                <button class="button button_style_blue">{% if edit %}Сохранить{% else %}Создать рецепт{% endif %}</button> <a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.slug %}" class="form__ingredient-link">Удалить</a>
+                <button class="button button_style_blue">{% if edit %}Сохранить{% else %}Создать рецепт{% endif %}</button> {% if edit %}<a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.slug %}" class="form__ingredient-link">Удалить</a>{% endif %}
             </div>
 
             </form>

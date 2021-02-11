@@ -1,5 +1,6 @@
 {% url 'create_recipe' as create_recipe %}
 {% url 'single_recipe' slug as single_recipe %}
+{% url 'index'  as index %}
 
 <header class="header">
     <nav class="nav">
@@ -7,8 +8,8 @@
             {% if user.is_authenticated %}
 
                 <ul class="nav__items list">
-                    <li class="nav__item {% if request.path == single_recipe %} nav__item_active {% endif %}">
-                        <a href="#" class="nav__link link">Рецепты</a></li>
+                    <li class="nav__item {% if request.path == index %} nav__item_active {% endif %}">
+                        <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                     <li class="nav__item"><a href="#" class="nav__link link">Мои
                         подписки</a></li>
 

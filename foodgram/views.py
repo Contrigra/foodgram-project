@@ -13,3 +13,7 @@ def index_view(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'index.html', {'page':page, 'paginator': paginator})
+
+def profile_view(request, slug):
+#TODO profile page rendering
+    ...

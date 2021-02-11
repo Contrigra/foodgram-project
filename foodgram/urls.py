@@ -17,14 +17,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import index_view
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', index_view, name='index'),
+    path('', views.index_view, name='index'),
     path('recipes/', include('api.urls')),
+    path('profile/<slug:slug>/', views.profile_view, name='profile')
 ]
 
 if settings.DEBUG:
