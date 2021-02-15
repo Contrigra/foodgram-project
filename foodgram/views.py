@@ -34,9 +34,10 @@ def follow_view(request):
 
 
 def shopping_list_view(request):
-    # TODO удаление предмета из шоплиста и скачать список в .txt
+    # TODO удаление предмета из шоплиста и скачать список в .txt, посчитать
     user = User.objects.get(pk=request.user.id)
     shopping_list = user.shoplist.recipes.all()
+
     return render(request, 'shopList.html', {'shopping_list' : shopping_list})
 
 def favorite_recipe_view(request):
