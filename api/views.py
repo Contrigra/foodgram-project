@@ -23,7 +23,7 @@ def create_recipe_view(request):
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
-            recipe.slug = slugify(recipe.title, only_ascii=True)
+            recipe.slug = slugify(recipe.title)
 
             recipe.save()
             form.save_m2m()
@@ -93,7 +93,7 @@ def recipe_edit_view(request, slug):
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
-            recipe.slug = slugify(recipe.title, only_ascii=True)
+            recipe.slug = slugify(recipe.title)
             recipe.save()
             form.save_m2m()
             # due to intermediatory model for many-to-many relationship of a
