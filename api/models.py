@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from taggit.managers import TaggableManager
+
 from users.models import User
 
 
@@ -64,3 +65,10 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f'{self.recipe.title} - {self.ingredient.name} {self.value} {self.ingredient.units},'
+
+class Shoplist(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True)
+    recipes = models.ManyToManyField(Recipe, blank=True)
+
+    def __str__(self):
+        return f'{self.user} shoplist: {self.recipes}'

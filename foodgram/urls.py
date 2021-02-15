@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.index_view, name='index'),
     path('recipes/', include('api.urls')),
+    path('shopping_list/', views.shopping_list_view, name='shopping_list'),
     path('profile/<slug:slug>/', views.profile_view, name='profile')
 ]
 
