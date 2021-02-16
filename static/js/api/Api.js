@@ -20,7 +20,7 @@ class Api {
     return fetch(`/purchases`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json', 'X-CSRFToken': csrftoken
       },
       body: JSON.stringify({
         id: id
@@ -37,7 +37,7 @@ class Api {
     return fetch(`/purchases/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json', 'X-CSRFToken': csrftoken
       }
     })
       .then( e => {

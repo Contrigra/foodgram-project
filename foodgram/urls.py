@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
 from . import views
 
 urlpatterns = [
@@ -25,7 +26,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.index_view, name='index'),
     path('recipes/', include('api.urls')),
-    path('shopping_list/', views.shopping_list_view, name='shopping_list'),
+    path('purchases', views.shopping_list_view, name='shopping_list'),
+    path('purchases/<int:id>/', views.shopping_list_item_delete,
+         name='shoplist_delete'),
     path('profile/<slug:slug>/', views.profile_view, name='profile')
 ]
 

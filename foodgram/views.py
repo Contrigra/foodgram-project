@@ -1,7 +1,11 @@
-from django.core.paginator import Paginator
-from django.shortcuts import render
+import ast
 
-from api.models import Recipe, User, Shoplist
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+
+
+from api.models import Recipe, User
 
 
 def index_view(request):
@@ -23,7 +27,6 @@ def profile_view(request, slug):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-
     return render(request, 'authorRecipe.html',
                   {'author': author, 'page': page, 'paginator': paginator})
 
@@ -35,10 +38,40 @@ def follow_view(request):
 
 def shopping_list_view(request):
     # TODO удаление предмета из шоплиста и скачать список в .txt, посчитать
-    user = User.objects.get(pk=request.user.id)
-    shopping_list = user.shoplist.recipes.all()
 
-    return render(request, 'shopList.html', {'shopping_list' : shopping_list})
+    if request.method == 'POST':
+        # We're getting a bytes type dictionary,
+        # need to parse and convert it to a dictionary to extract
+        # the needed recipe_id
+        recipe_id = request.body
+        recipe_id = recipe_id.decode('utf-8')
+        recipe_id = ast.literal_eval(recipe_id)['id']
+
+        user = User.objects.get(pk=request.user.id)
+        shopping_list = user.shoplist.recipes.add(
+            get_object_or_404(Recipe, id=recipe_id))
+        return HttpResponse(status=200)
+
+    # Added an if clause for additional clarity (I hope).
+    if request.method == 'GET':
+        user = User.objects.get(pk=request.user.id)
+        shopping_list = user.shoplist.recipes.all()
+
+        return render(request, 'shopList.html',
+                      {'shopping_list': shopping_list})
+
+
+def shopping_list_item_delete(request, id):
+    user = User.objects.get(pk=request.user.id)
+    user.shoplist.recipes.remove(get_object_or_404(Recipe, id=id))
+
+    return redirect
+
+
+def shopping_list_item_add(request, id):
+    user = User.objects.get(pk=request.user.id)
+    user.shoplist.recipes.add(Recipe.objects.get(id=id))
+
 
 def favorite_recipe_view(request):
     ...

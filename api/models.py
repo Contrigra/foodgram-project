@@ -74,4 +74,4 @@ class Shoplist(models.Model):
     recipes = models.ManyToManyField(Recipe, blank=True)
 
     def __str__(self):
-        return f'{self.user}, call .all() for a list of recipes'
+        return f'{self.user} shopping list'

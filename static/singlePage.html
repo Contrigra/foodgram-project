@@ -2,9 +2,10 @@
 {% block title %}Создать рецепт{% endblock %}
 {% load static %}
 {% block content %}
+
     <main class="main container">
     <link rel="stylesheet" href={% static "pages/single.css" %}>
-        <div class="single-card" data-id="371" data-author="12">
+        <div class="single-card" data-id="{{ recipe.id }}" data-author="12">
             <img src={{ recipe.image.url }} class="single-card__image">
             <div class="single-card__info">
                 <div class="single-card__header-info">
@@ -36,6 +37,7 @@
                     </ul>
                 </div>
 
+
                 <ul class="single-card__items">
                     <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button></li>
                     {% if user.is_authenticated %}
@@ -61,6 +63,10 @@
         </div>
     </main>
 
+{% csrf_token %}
+    <script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 <script src={% static "js/components/Purchases.js" %}></script>
 <script src={% static "js/components/Favorites.js" %}></script>
 <script src={% static "js/components/Subscribe.js" %}></script>
