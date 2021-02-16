@@ -4,7 +4,6 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
-
 from api.models import Recipe, User
 
 
@@ -37,7 +36,7 @@ def follow_view(request):
 
 
 def shopping_list_view(request):
-    # TODO удаление предмета из шоплиста и скачать список в .txt, посчитать
+
 
     if request.method == 'POST':
         # We're getting a bytes type dictionary,
@@ -52,20 +51,22 @@ def shopping_list_view(request):
             get_object_or_404(Recipe, id=recipe_id))
         return HttpResponse(status=200)
 
-    # Added an if clause for additional clarity (I hope).
-    if request.method == 'GET':
-        user = User.objects.get(pk=request.user.id)
-        shopping_list = user.shoplist.recipes.all()
+        # Added an if clause for additional clarity (I hope).
 
-        return render(request, 'shopList.html',
-                      {'shopping_list': shopping_list})
+    user = User.objects.get(pk=request.user.id)
+    shopping_list = user.shoplist.recipes.all()
+
+    return render(request, 'shopList.html',
+                  {'shopping_list': shopping_list})
 
 
 def shopping_list_item_delete(request, id):
+    # TODO сделать обновление страницы(проверить, нужно ли)
     user = User.objects.get(pk=request.user.id)
     user.shoplist.recipes.remove(get_object_or_404(Recipe, id=id))
 
-    return redirect
+    return HttpResponse(status=204)
+
 
 
 def shopping_list_item_add(request, id):
@@ -73,5 +74,10 @@ def shopping_list_item_add(request, id):
     user.shoplist.recipes.add(Recipe.objects.get(id=id))
 
 
+def shopping_list_download_view(request):
+    # TODO
+    ...
+
 def favorite_recipe_view(request):
+    # TODO
     ...
