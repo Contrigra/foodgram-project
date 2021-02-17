@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {% load static %}
     <main class="main container">
         <div class="main__header">
             <h1 class="main__title">{% if  author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}{{ author.username }}{% endif %}</h1>
@@ -64,17 +65,23 @@
         {% endif %}
 
 
-  <script src="js/components/MainCards.js"></script>
+        {% csrf_token %}
+    <script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/Favorites.js' %}"></script>
 
-  <script src="js/components/Purchases.js"></script>
-  <script src="js/components/Favorites.js"></script>
-  <script src="js/components/Subscribe.js"></script>
+    <script src="{% static 'js/config/config.js' %}"></script>
+    <script src="{% static 'js/components/CardList.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
 
-  <script src="js/config/config.js"></script>
-  <script src="js/components/AuthorRecipe.js"></script>
-  <script src="js/components/Header.js"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'js/components/Subscribe.js' %}"></script>
+  <script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
 
-  <script src="js/api/Api.js"></script>
-  <script src="authorRecipe.js"></script>
+
+  <script src="{% static 'authorRecipe.js' %}"></script>
 
 {% endblock %}

@@ -29,6 +29,9 @@ urlpatterns = [
     path('purchases', views.shopping_list_view, name='shopping_list'),
     path('purchases/<int:id>/', views.shopping_list_item_delete,
          name='shoplist_delete'),
+    path('purchases/download/', views.shopping_list_download_view,
+         name='shoplist_download'),
+
     path('profile/<slug:slug>/', views.profile_view, name='profile')
 ]
 
