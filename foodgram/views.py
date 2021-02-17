@@ -1,8 +1,10 @@
 import ast
 
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.http import require_http_methods, require_POST
 
 from api.models import Recipe, User
 
@@ -49,29 +51,31 @@ def shopping_list_view(request):
         user = User.objects.get(pk=request.user.id)
         shopping_list = user.shoplist.recipes.add(
             get_object_or_404(Recipe, id=recipe_id))
-        return HttpResponse(status=200)
+
+        data = {'success': True}
+        return JsonResponse(data)
 
         # Added an if clause for additional clarity (I hope).
 
     user = User.objects.get(pk=request.user.id)
     shopping_list = user.shoplist.recipes.all()
 
+
     return render(request, 'shopList.html',
                   {'shopping_list': shopping_list})
 
-
+@login_required
+@require_http_methods('DELETE')
 def shopping_list_item_delete(request, id):
-    # TODO сделать обновление страницы(проверить, нужно ли)
+    # TODO сделать валидацию и отправлять ответ JSON
     user = User.objects.get(pk=request.user.id)
     user.shoplist.recipes.remove(get_object_or_404(Recipe, id=id))
 
-    return HttpResponse(status=204)
+    data = {'success': True}
+    return JsonResponse(data)
 
 
 
-def shopping_list_item_add(request, id):
-    user = User.objects.get(pk=request.user.id)
-    user.shoplist.recipes.add(Recipe.objects.get(id=id))
 
 
 def shopping_list_download_view(request):

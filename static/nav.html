@@ -2,7 +2,7 @@
 {% url 'single_recipe' slug as single_recipe %}
 {% url 'index'  as index %}
 {% url 'shopping_list' as shopping_list %}
-
+{% load static %}
 <header class="header">
     <nav class="nav">
         <div class="nav__container container">
@@ -19,11 +19,11 @@
 
                     <li class="nav__item {% if request.path == 513 %} nav__item_active {% endif %}">
                         <a href="#" class="nav__link link">Избранное</a></li>
+
                     <li class="nav__item {% if request.path == shopping_list %} nav__item_active {% endif %}"><a href="{% url 'shopping_list' %}" class="nav__link link">Список
                         покупок</a>
                         <span class="badge badge_style_blue nav__badge" id="counter">{{ request.user.shoplist.recipes.all.count }}</span>
                     </li>
-
                 </ul>
 
                 <ul class="nav__items list">
@@ -55,4 +55,6 @@
                 </nav>
             {% endif %}
     </nav>
+
+
 </header>
