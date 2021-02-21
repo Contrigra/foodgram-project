@@ -1,9 +1,8 @@
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from users.forms import CreationForm
 
+from users.forms import CreationForm
 
 
 def sign_up_view(request):
@@ -17,5 +16,3 @@ def sign_up_view(request):
 
     context['form'] = form
     return render(request, 'registration/sign_up.html', context)
-
-

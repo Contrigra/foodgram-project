@@ -3,9 +3,11 @@
     margin: 0 20px;
     color: #000000;
 }
-.pagination__item:first-child{
+
+.pagination__item:first-child {
     margin-left: 0;
 }
+
 .pagination__item:last-child {
     margin-right: 0;
 }

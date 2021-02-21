@@ -2,6 +2,7 @@
 {% url 'single_recipe' slug as single_recipe %}
 {% url 'index'  as index %}
 {% url 'shopping_list' as shopping_list %}
+{% url 'favourites' as favourites %}
 {% load static %}
 <header class="header">
     <nav class="nav">
@@ -17,12 +18,14 @@
                     <li class="nav__item {% if request.path == create_recipe %} nav__item_active {% endif %}">
                         <a href="{% url 'create_recipe' %}" class="nav__link link">Создать рецепт</a></li>
 
-                    <li class="nav__item {% if request.path == 513 %} nav__item_active {% endif %}">
-                        <a href="#" class="nav__link link">Избранное</a></li>
+                    <li class="nav__item {% if request.path == favourites %} nav__item_active {% endif %}">
+                        <a href="{% url 'favourites' %}" class="nav__link link">Избранное</a></li>
 
-                    <li class="nav__item {% if request.path == shopping_list %} nav__item_active {% endif %}"><a href="{% url 'shopping_list' %}" class="nav__link link">Список
+                    <li class="nav__item {% if request.path == shopping_list %} nav__item_active {% endif %}"><a
+                            href="{% url 'shopping_list' %}" class="nav__link link">Список
                         покупок</a>
-                        <span class="badge badge_style_blue nav__badge" id="counter">{{ request.user.shoplist.recipes.all.count }}</span>
+                        <span class="badge badge_style_blue nav__badge"
+                              id="counter">{{ request.user.shoplist.recipes.all.count }}</span>
                     </li>
                 </ul>
 

@@ -4,25 +4,26 @@ class Favorites {
         this.api = api;
     }
 
-    addFavorites (target,cardId,callBack) {
+    addFavorites(target, cardId, callBack) {
         target.setAttribute('disabled', true)
         this.api.addFavorites(cardId)
-            .then( e => {
+            .then(e => {
                 target.innerHTML = this.config.active.text;
                 target.removeAttribute(this.config.attr);
-                callBack&&callBack()
+                callBack && callBack()
             })
             .finally(e => {
                 target.removeAttribute('disabled');
             })
     };
-    removeFavorites (target,cardId,callBack) {
+
+    removeFavorites(target, cardId, callBack) {
         target.setAttribute('disabled', true)
         this.api.removeFavorites(cardId)
-            .then( e => {
+            .then(e => {
                 target.innerHTML = this.config.default.text;
                 target.setAttribute(this.config.attr, true);
-                callBack&&callBack()
+                callBack && callBack()
             })
             .finally(e => {
                 target.removeAttribute('disabled');

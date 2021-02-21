@@ -1,6 +1,7 @@
 .tags__checkbox_active {
     background: currentColor;
 }
+
 .tags__checkbox_active:before {
     content: '';
     position: absolute;

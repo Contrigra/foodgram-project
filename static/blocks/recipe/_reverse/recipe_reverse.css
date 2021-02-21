@@ -1,4 +1,3 @@
 .recipe_reverse {
-    grid-template-areas: 'image title'
-    'image text';
+    grid-template-areas: 'image title' 'image text';
 }

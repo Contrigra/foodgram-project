@@ -11,6 +11,7 @@
     grid-row: auto;
     grid-column: 1/-1;
 }
+
 .form__ingredient-link:before {
     content: '';
     position: absolute;
@@ -18,5 +19,5 @@
     height: 1px;
     bottom: 2px;
     left: 0;
-    background:  currentColor;
+    background: currentColor;
 }

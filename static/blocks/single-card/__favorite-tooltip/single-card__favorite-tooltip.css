@@ -19,6 +19,7 @@
     display: inline-block;
     width: 190px;
 }
+
 .single-card__favorite-tooltip::after {
     content: "";
     position: absolute;
@@ -29,6 +30,7 @@
     border-style: solid;
     border-color: transparent transparent #555E75 transparent;
 }
+
 .single-card__favorite:hover .single-card__favorite-tooltip {
     visibility: visible;
 }

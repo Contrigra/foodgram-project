@@ -2,8 +2,8 @@
 {% block title %}Зарегистрироваться{% endblock %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href={% static "pages/form.css" %} >
-<main class="main container">
+    <link rel="stylesheet" href={% static "pages/form.css" %}>
+    <main class="main container">
     <div class="main__header">
         <h1 class="main__title">Регистрация</h1>
     </div>
@@ -27,7 +27,7 @@
                     <input type="text" name="username" id="id_username" class="form__input">
                     {% if form.username.errors %}
                         {% for error in form.username.errors %}
-                        <span class="form__error">{{ error }}</span>
+                            <span class="form__error">{{ error }}</span>
                         {% endfor %}
 
                     {% endif %}
@@ -37,9 +37,9 @@
                 <label for="id_email" class="form__label">Адрес электронной почты</label>
                 <div class="form__field-group">
                     <input type="email" name="email" id="id_email" class="form__input">
-                                        {% if form.email.errors %}
+                    {% if form.email.errors %}
                         {% for error in form.email.errors %}
-                        <span class="form__error">{{ error }}</span>
+                            <span class="form__error">{{ error }}</span>
                         {% endfor %}
 
                     {% endif %}
@@ -52,7 +52,7 @@
                            class="form__input">
                     {% if form.password1.errors %}
                         {% for error in form.password1.errors %}
-                        <span class="form__error">{{ error }}</span>
+                            <span class="form__error">{{ error }}</span>
                         {% endfor %}
 
                     {% endif %}
@@ -67,7 +67,7 @@
                            class="form__input">
                     {% if form.password2.errors %}
                         {% for error in form.password2.errors %}
-                        <span class="form__error">{{ error }}</span>
+                            <span class="form__error">{{ error }}</span>
                         {% endfor %}
 
                     {% endif %}

@@ -1,6 +1,7 @@
 .pagination__item_active {
     color: #FFFFFF;
 }
+
 .pagination__item_active:after {
     position: absolute;
     content: '';

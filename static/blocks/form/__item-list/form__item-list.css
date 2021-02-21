@@ -9,6 +9,7 @@
     line-height: 22px;
     color: #000000;
 }
+
 .form__item-list:last-child {
     margin-bottom: 0;
 }

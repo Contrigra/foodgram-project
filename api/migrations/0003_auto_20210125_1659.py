@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('api', '0002_auto_20210118_1716'),
     ]
@@ -13,7 +12,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='ingredient',
-            options={'ordering': ['name'], 'verbose_name': 'Ingredient', 'verbose_name_plural': 'Ingredients'},
+            options={'ordering': ['name'], 'verbose_name': 'Ingredient',
+                     'verbose_name_plural': 'Ingredients'},
         ),
         migrations.RenameField(
             model_name='ingredient',
@@ -32,12 +32,18 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='recipeingredient',
             name='value',
-            field=models.PositiveSmallIntegerField(default=10, help_text='Добавьте необходимое количество ингредиентов', validators=[django.core.validators.MinValueValidator(1)], verbose_name='ingredient weight'),
+            field=models.PositiveSmallIntegerField(default=10,
+                                                   help_text='Добавьте необходимое количество ингредиентов',
+                                                   validators=[
+                                                       django.core.validators.MinValueValidator(
+                                                           1)],
+                                                   verbose_name='ingredient weight'),
         ),
         migrations.AlterField(
             model_name='recipe',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='recipes'),
+            field=models.ImageField(blank=True, null=True,
+                                    upload_to='recipes'),
         ),
         migrations.AlterField(
             model_name='recipe',

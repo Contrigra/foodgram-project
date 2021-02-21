@@ -84,6 +84,7 @@ python-telegram-bot==12.7
 PyTweening==1.0.3
 pytz==2019.3
 pywin32-ctypes==0.2.0
+reportlab==3.5.59
 requests==2.23.0
 selenium==3.141.0
 Send2Trash==1.5.0

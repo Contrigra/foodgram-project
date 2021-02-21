@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
-from api.models import Ingredient, Recipe, RecipeIngredient, User
+from api.models import Ingredient, Recipe, RecipeIngredient
+from users.models import User
 from .forms import RecipeForm
 from .utils import get_and_save_RecipeIngredients, populate_tags, \
     get_tag_list
@@ -51,7 +52,6 @@ def list_ingredients_view(request):
     ingredients = list(Ingredient.objects.filter(
         name__istartswith=text).values('name', 'units'))
 
-
     return JsonResponse(ingredients, safe=False)
 
 
@@ -79,7 +79,6 @@ def recipe_edit_view(request, slug):
     author = get_object_or_404(User, username=recipe.author)
     edit = True
 
-
     if request.user != author:
         return redirect("single_recipe",
                         slug=slug)
@@ -87,7 +86,6 @@ def recipe_edit_view(request, slug):
     request = populate_tags(request)
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe)
-
 
     tags = get_tag_list(form)
 

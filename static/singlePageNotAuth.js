@@ -19,7 +19,7 @@ const configButton = {
 const purchases = new Purchases(configButton.purchases, api);
 
 
-const singleCard = new SingleCard(container, '.single-card', header, api, false,{
+const singleCard = new SingleCard(container, '.single-card', header, api, false, {
     purchases,
 });
 singleCard.addEvent();

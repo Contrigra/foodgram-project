@@ -16,7 +16,7 @@ const configButton = {
     }
 }
 const subscribe = new Subscribe(configButton.subscribe, api);
-const myFollow = new MyFollow(container, '.card-user', header, api, true,{
+const myFollow = new MyFollow(container, '.card-user', header, api, true, {
     subscribe
 })
 myFollow.addEvent();

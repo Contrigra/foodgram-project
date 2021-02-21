@@ -1,8 +1,7 @@
 .recipe {
     display: grid;
     position: relative;
-    grid-template-areas: 'title image'
-    'text image';
+    grid-template-areas: 'title image' 'text image';
     justify-content: space-between;
     column-gap: 50px;
 }

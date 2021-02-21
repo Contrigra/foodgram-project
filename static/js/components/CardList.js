@@ -1,5 +1,5 @@
 class CardList extends MainCards {
-    _eventUserAuth (e) {
+    _eventUserAuth(e) {
         super._eventUserAuth(e);
         if (this.target && this.target.name === 'purchases') {
             this._eventPurchases(this.target)
@@ -8,26 +8,29 @@ class CardList extends MainCards {
             this._eventFavorites(this.target);
         }
     }
-    _eventUserNotAuth  (e)  {
+
+    _eventUserNotAuth(e) {
         super._eventUserAuth(e);
         if (this.target && this.target.name === 'purchases') {
             this._eventPurchases(this.target)
         }
     }
-    _eventFavorites  (target) {
+
+    _eventFavorites(target) {
         const cardId = target.closest(this.card).getAttribute('data-id');
-        if(target.hasAttribute('data-out')) {
-            this.button.favorites.addFavorites(target,cardId)
+        if (target.hasAttribute('data-out')) {
+            this.button.favorites.addFavorites(target, cardId)
         } else {
-            this.button.favorites.removeFavorites(target,cardId)
+            this.button.favorites.removeFavorites(target, cardId)
         }
     }
-    _eventPurchases  (target)  {
+
+    _eventPurchases(target) {
         const cardId = target.closest(this.card).getAttribute('data-id');
-        if(target.hasAttribute('data-out')) {
-            this.button.purchases.addPurchases(target,cardId, this.counter.plusCounter)
+        if (target.hasAttribute('data-out')) {
+            this.button.purchases.addPurchases(target, cardId, this.counter.plusCounter)
         } else {
-            this.button.purchases.removePurchases(target,cardId,this.counter.minusCounter);
+            this.button.purchases.removePurchases(target, cardId, this.counter.minusCounter);
 
         }
     }

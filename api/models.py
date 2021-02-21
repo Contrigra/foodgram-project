@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from taggit.managers import TaggableManager
 
-from users.models import User
+User = get_user_model()
 
 
 class Ingredient(models.Model):
@@ -56,7 +57,8 @@ class Recipe(models.Model):
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, null=True,
+                                   on_delete=models.SET_NULL)
     value = models.PositiveSmallIntegerField(
         verbose_name='ingredient weight', null=False,
         validators=[MinValueValidator(1)], default=10,
@@ -69,9 +71,20 @@ class RecipeIngredient(models.Model):
 
 
 class Shoplist(models.Model):
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True,
+    # TODO autocreation for an user.
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
                                 null=True)
     recipes = models.ManyToManyField(Recipe, blank=True)
 
     def __str__(self):
         return f'{self.user} shopping list'
+
+
+class Favourites(models.Model):
+    # TODO autocreation for an user by creating a class method  https://stackoverflow.com/a/46002695
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
+                                null=True)
+    recipes = models.ManyToManyField(Recipe, blank=True)
+
+    def __str__(self):
+        return f'{self.user} favourites list'

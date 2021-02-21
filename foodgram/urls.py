@@ -31,8 +31,9 @@ urlpatterns = [
          name='shoplist_delete'),
     path('purchases/download/', views.shopping_list_download_view,
          name='shoplist_download'),
+    path('favourites/', views.favorite_recipe_view, name='favourites'),
 
-    path('profile/<slug:slug>/', views.profile_view, name='profile')
+    path('profile/<slug:slug>/', views.profile_view, name='profile'),
 ]
 
 if settings.DEBUG:

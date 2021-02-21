@@ -2,12 +2,13 @@ import ast
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from api.models import Recipe, User
+from api.models import Recipe
 from foodgram.utils import sum_ingredients
+from users.models import User
 
 
 def index_view(request):
@@ -41,8 +42,7 @@ def shopping_list_view(request):
         recipe_id = ast.literal_eval(recipe_id)['id']
 
         user = User.objects.get(pk=request.user.id)
-        shopping_list = user.shoplist.recipes.add(
-            get_object_or_404(Recipe, id=recipe_id))
+        user.shoplist.recipes.add(get_object_or_404(Recipe, id=recipe_id))
 
         data = {'success': True}
         return JsonResponse(data)
@@ -66,21 +66,28 @@ def shopping_list_item_delete(request, id):
 
 @login_required
 def shopping_list_download_view(request):
-    # TODO выдачу txt
+    # TODO удаление документа после выдачи
 
     user = User.objects.get(pk=request.user.id)
     ingredient_list = list(user.shoplist.recipes.values('ingredients__name',
                                                         'recipeingredient__value',
                                                         'ingredients__units'))
     ingredient_list = sum_ingredients(ingredient_list)
-    print(ingredient_list)
+    with open(f'{user.username}_shopping_list.txt', 'w+',
+              encoding='utf-8') as txt:
+        for ingredient in ingredient_list:
+            txt.write('{d} {v}{u}\n'.format(d=ingredient['ingredients__name'],
+                                            v=ingredient[
+                                                'recipeingredient__value'],
+                                            u=ingredient[
+                                                'ingredients__units']))
 
-    return HttpResponse(200)
+    return FileResponse(open(txt.name, 'rb'), as_attachment=True)
 
 
 def favorite_recipe_view(request):
     # TODO
-    ...
+    return render(request, 'favorite.html')
 
 
 # TODO follow

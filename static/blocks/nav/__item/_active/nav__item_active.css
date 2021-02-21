@@ -1,6 +1,7 @@
 .nav__item_active {
     color: #4A61DD;
 }
+
 .nav__item_active:after {
     content: '';
     position: absolute;

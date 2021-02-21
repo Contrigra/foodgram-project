@@ -1,6 +1,7 @@
 .nav__badge {
     margin-left: 8px;
 }
+
 .nav__badge:empty {
     display: none;
 }

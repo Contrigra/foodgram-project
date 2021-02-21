@@ -16,6 +16,7 @@
     cursor: pointer;
     width: max-content;
 }
+
 .button:active {
     box-shadow: 0 0 7px #ddd;
 }

@@ -8,6 +8,7 @@
     margin-left: 28px;
     cursor: pointer;
 }
+
 .form__forgot-link:before {
     content: '';
     position: absolute;
@@ -15,5 +16,5 @@
     height: 1px;
     bottom: 2px;
     left: 0;
-    background:  currentColor;
+    background: currentColor;
 }

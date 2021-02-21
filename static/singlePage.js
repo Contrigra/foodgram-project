@@ -41,7 +41,7 @@ const favorites = new Favorites(configButton.favorites, api);
 const subscribe = new Subscribe(configButton.subscribe, api);
 
 
-const singleCard = new SingleCard(container, '.single-card', header, api, true,{
+const singleCard = new SingleCard(container, '.single-card', header, api, true, {
     purchases,
     favorites,
     subscribe

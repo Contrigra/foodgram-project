@@ -43,6 +43,7 @@ def populate_tags(request):
 
     return request
 
+
 def get_tag_list(form):
     """
     A simple list of tags in a form of strings for proper render at the
