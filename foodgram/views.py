@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-
+from django.core.signals import request_finished
 from api.models import Recipe
 from foodgram.utils import sum_ingredients
 from users.models import User
@@ -82,13 +82,19 @@ def shopping_list_download_view(request):
                                             u=ingredient[
                                                 'ingredients__units']))
 
-    return FileResponse(open(txt.name, 'rb'), as_attachment=True)
+        return FileResponse(open(txt.name, 'rb'), as_attachment=True)
 
 
+@login_required
 def favorite_recipe_view(request):
-    # TODO
-    return render(request, 'favorite.html')
+    user = User.objects.get(pk=request.user.id)
+    recipes = user.favourites.recipes.all().order_by('-pub_date')
+    paginator = Paginator(recipes, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'favorite.html', {'page': page})
 
+#TODO delete, add favourite, similar to shopping list. Template rendering
 
 # TODO follow
 def follow_view(request):
