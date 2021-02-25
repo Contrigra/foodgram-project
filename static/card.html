@@ -15,6 +15,7 @@
                                 <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
                             {% endif %}
                         </ul>
+
                         <div class="card__items card__items_column">
                             <p class="card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
 
@@ -24,10 +25,17 @@
                             </p>
                         </div>
                     </div>
+
                     <div class="card__footer">
-                        <button class="button button_style_light-blue" name="purchases" data-out><span
-                                class="icon-plus button__icon"></span>Добавить в покупки
+                    {% if recipe not in request.user.shoplist.recipes.all %}
+                        <button class="button button_style_light-blue" name="purchases"  data-out>
+                            <span class="icon-plus button__icon"></span>Добавить в покупки
                         </button>
+                    {% else %}
+                    <button class="button button_style_light-blue-outline" name="purchases"><span class="icon-check button__icon"></span> Рецепт добавлен</button>
+                    {% endif %}
+
+
                         <button class="button button_style_none" name="favorites" {% if recipe not in request.user.favorites.recipes.all %} data-out="true" {% endif %}>
                             <span
                                 class="icon-favorite {% if recipe in request.user.favorites.recipes.all %}icon-favorite_active{% endif %}"></span></button>
