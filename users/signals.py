@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from api.models import Shoplist, Favourites
+from api.models import Shoplist, Favorites
 from .models import User
 
 
@@ -16,4 +16,4 @@ def create_shoplist(sender, instance, created, **kwargs):
 def create_favourites(sender, instance, created, **kwargs):
     """A signal to create User's favourite list after User creation"""
     if created:
-        Favourites.objects.create(user=instance)
+        Favorites.objects.create(user=instance)

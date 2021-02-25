@@ -31,8 +31,9 @@ urlpatterns = [
          name='shoplist_delete'),
     path('purchases/download/', views.shopping_list_download_view,
          name='shoplist_download'),
-    path('favorites/', views.favorite_recipe_view, name='favorites'),
-
+    path('favorites', views.favorite_recipe_view, name='favorites'),
+    path('favorites/<int:id>/', views.favorite_item_delete,
+         name='favorite_delete'),
     path('profile/<slug:slug>/', views.profile_view, name='profile'),
 ]
 

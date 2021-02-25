@@ -71,7 +71,6 @@ class RecipeIngredient(models.Model):
 
 
 class Shoplist(models.Model):
-    # TODO autocreation for an user.
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
                                 null=True)
     recipes = models.ManyToManyField(Recipe, blank=True)
@@ -80,8 +79,7 @@ class Shoplist(models.Model):
         return f'{self.user} shopping list'
 
 
-class Favourites(models.Model):
-    # TODO autocreation for an user by creating a class method  https://stackoverflow.com/a/46002695
+class Favorites(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
                                 null=True)
     recipes = models.ManyToManyField(Recipe, blank=True)

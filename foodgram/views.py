@@ -87,14 +87,34 @@ def shopping_list_download_view(request):
 
 @login_required
 def favorite_recipe_view(request):
+    if request.method == 'POST':
+        recipe_id = request.body
+        recipe_id = recipe_id.decode('utf-8')  # We receive a bytes type data
+        recipe_id = ast.literal_eval(recipe_id)['id']
+
+        user = User.objects.get(pk=request.user.id)
+        user.favorites.recipes.add(get_object_or_404(Recipe, id=recipe_id))
+
+        data = {'success': True}
+        return JsonResponse(data)
+
     user = User.objects.get(pk=request.user.id)
-    recipes = user.favourites.recipes.all().order_by('-pub_date')
+    recipes = user.favorites.recipes.all().order_by('-pub_date')
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'favorite.html', {'page': page})
+    return render(request, 'favorite.html', {'page': page, 'paginator' : paginator})
 
 #TODO delete, add favourite, similar to shopping list. Template rendering
+
+@login_required
+@require_http_methods('DELETE')
+def favorite_item_delete(request, id):
+    user = User.objects.get(pk=request.user.id)
+    user.favorites.recipes.remove(get_object_or_404(Recipe, id=id))
+
+    data = {'success': True}
+    return JsonResponse(data)
 
 # TODO follow
 def follow_view(request):
