@@ -35,6 +35,8 @@ urlpatterns = [
     path('favorites/<int:id>/', views.favorite_item_delete,
          name='favorite_delete'),
     path('profile/<slug:slug>/', views.profile_view, name='profile'),
+    path('subscriptions', include('users.urls')),
+
 ]
 
 if settings.DEBUG:
