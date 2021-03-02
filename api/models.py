@@ -29,7 +29,7 @@ class Recipe(models.Model):
     With a subclass of tags
     """
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     title = models.CharField(max_length=256, unique=True)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',

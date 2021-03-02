@@ -35,7 +35,9 @@ urlpatterns = [
     path('favorites/<int:id>/', views.favorite_item_delete,
          name='favorite_delete'),
     path('profile/<slug:slug>/', views.profile_view, name='profile'),
-    path('subscriptions', include('users.urls')),
+    path('subscriptions', views.subscriptions_index, name='subscriptions'),
+    path('subscriptions/<int:id>/follow/', views.follow_view, name='follows'),
+    path('subscriptions/<int:id>/unfollow/', views.unfollow_view, name='unfollow'),
 
 ]
 

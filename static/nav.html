@@ -3,6 +3,7 @@
 {% url 'index'  as index %}
 {% url 'shopping_list' as shopping_list %}
 {% url 'favourites' as favourites %}
+{% url 'subscriptions' as subscriptions %}
 {% load static %}
 <header class="header">
     <nav class="nav">
@@ -12,7 +13,7 @@
                 <ul class="nav__items list">
                     <li class="nav__item {% if request.path == index %} nav__item_active {% endif %}">
                         <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link link">Мои
+                    <li class="nav__item {% if request.path == subscriptions %} nav__item_active {% endif %}"><a href="{% url 'subscriptions' %}" class="nav__link link">Мои
                         подписки</a></li>
 
                     <li class="nav__item {% if request.path == create_recipe %} nav__item_active {% endif %}">

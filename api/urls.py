@@ -12,4 +12,5 @@ urlpatterns = [
     path('<slug:slug>/delete', views.delete_recipe_view, name='delete_recipe')
 
 
+
 ]

@@ -96,7 +96,7 @@ def recipe_edit_view(request, slug):
             recipe.slug = slugify(recipe.title)
             recipe.save()
             form.save_m2m()
-            # due to intermediatory model for many-to-many relationship of a
+            # due to intermediary model for many-to-many relationship of a
             # Recipe and Ingredients, you have to manually create objects of
             # the said third model.
             get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
@@ -121,8 +121,9 @@ def delete_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     recipe.delete()
+
+    # Deleting RecipeIngredients since they're unreachable from recipe object
     ingredients.delete()
 
     return redirect(to='index')
 
-    # Deleting RecipeIngredients since they're unreachable from recipe object

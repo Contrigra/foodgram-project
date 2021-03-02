@@ -3,12 +3,12 @@ import ast
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse, FileResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
-from django.core.signals import request_finished
+
 from api.models import Recipe
 from foodgram.utils import sum_ingredients
-from users.models import User
+from users.models import User, Follow
 
 
 def index_view(request):
@@ -26,12 +26,16 @@ def profile_view(request, slug):
     # TODO фильтрация по тегам
     author = User.objects.get(username=slug)
     recipes = Recipe.objects.order_by('-pub_date').filter(author=author)
+    subscribed = (request.user.follower.select_related('author').filter(
+        author=author).exists())
+
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
     return render(request, 'authorRecipe.html',
-                  {'author': author, 'page': page, 'paginator': paginator})
+                  {'author': author, 'page': page, 'paginator': paginator,
+                   'subscribed': subscribed})
 
 
 @login_required
@@ -66,8 +70,6 @@ def shopping_list_item_delete(request, id):
 
 @login_required
 def shopping_list_download_view(request):
-    # TODO удаление документа после выдачи
-
     user = User.objects.get(pk=request.user.id)
     ingredient_list = list(user.shoplist.recipes.values('ingredients__name',
                                                         'recipeingredient__value',
@@ -103,9 +105,9 @@ def favorite_recipe_view(request):
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'favorite.html', {'page': page, 'paginator' : paginator})
+    return render(request, 'favorite.html',
+                  {'page': page, 'paginator': paginator})
 
-#TODO delete, add favourite, similar to shopping list. Template rendering
 
 @login_required
 @require_http_methods('DELETE')
@@ -116,6 +118,45 @@ def favorite_item_delete(request, id):
     data = {'success': True}
     return JsonResponse(data)
 
+
 # TODO follow
-def follow_view(request):
-    ...
+@login_required
+def subscriptions_index(request):
+    user = request.user
+    followed_authors = user.follower.select_related('author').order_by(
+        '-author')
+    paginator = Paginator(followed_authors, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'myFollow.html',
+                  {'page': page, 'paginator': paginator,
+                   'followed_authors': followed_authors})
+
+
+@login_required
+def follow_view(request, id):
+    author = get_object_or_404(User, id=id)
+    data = {'success': True}
+
+    if request.user != author:
+        follow, created = Follow.objects.get_or_create(user=request.user,
+                                                       author=author)
+        if created:
+            return JsonResponse(data)
+
+    return redirect('profile', slug=author.username)
+
+
+@login_required
+def unfollow_view(request, id):
+    # TODO кнопку отписаться из страницы подписок
+    author = get_object_or_404(User, id=id)
+    follow_to_delete = Follow.objects.get(user=request.user,
+                                          author=author)
+    if follow_to_delete is not None:
+        follow_to_delete.delete()
+        data = {'success': True}
+
+        return JsonResponse(data)
+
+    return redirect('profile', slug=author.username)
