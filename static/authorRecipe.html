@@ -32,15 +32,15 @@
         {% if request.user != author %}
             <p style="padding: 0 0 2em 0;">
             {% if subscribed %}
-
             <button class="button button_style_light-blue button_size_subscribe button_style_blue" name="subscribe">Отписаться от автора</button>
-            {% else %}
 
+            {% else %}
                 <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
                     Подписаться на автора
                 </button>
-            </p>
+
                 {% endif %}
+            </p>
         {% endif %}
         </div>
         <div class="card-list">

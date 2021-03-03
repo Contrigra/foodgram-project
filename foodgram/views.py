@@ -29,6 +29,7 @@ def profile_view(request, slug):
     subscribed = (request.user.follower.select_related('author').filter(
         author=author).exists())
 
+
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

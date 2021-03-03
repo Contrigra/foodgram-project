@@ -5,7 +5,7 @@
 
     <main class="main container">
         <link rel="stylesheet" href={% static "pages/single.css" %}>
-        <div class="single-card" data-id="{{ recipe.id }}" data-author="12">
+        <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.id }}">
             <img src={{ recipe.image.url }} class="single-card__image">
             <div class="single-card__info">
                 <div class="single-card__header-info">
@@ -49,11 +49,22 @@
                         </button>
                     </li>
                     {% if user.is_authenticated %}
-                        <li class="single-card__item">
-                            <button class="button button_style_light-blue button_size_subscribe" name="subscribe"
-                                    data-out>Подписаться на автора
-                            </button>
-                        </li>
+                        {% if request.user != recipe.author %}
+                            <p style="padding: 0 0 2em 0;">
+                            <li class="single-card__item">
+                                {% if subscribed %}
+                                    <button class="button button_style_light-blue button_size_subscribe button_style_blue"
+                                            name="subscribe">Отписаться от автора
+                                    </button>
+                                {% else %}
+                                    <button class="button button_style_light-blue button_size_subscribe"
+                                            name="subscribe" data-out>
+                                        Подписаться на автора
+                                    </button>
+                                {% endif %}
+                            </p>
+                            </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
                 <div class="single-card__section">

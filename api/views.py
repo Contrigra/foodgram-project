@@ -63,15 +63,16 @@ def single_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     tags = recipe.tag.names()
+    subscribed = (request.user.follower.select_related('author').filter(
+        author=recipe.author).exists())
 
     return render(request, 'singlePage.html', {
         'slug': slug,
         'recipe': recipe,
         'recipe_ingredients': recipe_ingredients,
-        'tags': tags, })
+        'tags': tags,
+        'subscribed': subscribed})
 
-
-# TODO make form populated with saved data. Make proper rendering in the HTML template
 
 @login_required
 def recipe_edit_view(request, slug):
@@ -126,4 +127,3 @@ def delete_recipe_view(request, slug):
     ingredients.delete()
 
     return redirect(to='index')
-
