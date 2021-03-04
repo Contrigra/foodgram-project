@@ -7,14 +7,19 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from api.models import Recipe
-from foodgram.utils import sum_ingredients
+from foodgram.utils import sum_ingredients, get_tags
 from users.models import User, Follow
 
 
 def index_view(request):
     # TODO фильтряация
-
-    recipes = Recipe.objects.order_by('-pub_date').all()
+    # TODO https://stackoverflow.com/questions/223990/how-do-i-perform-query-filtering-in-django-templates
+    # ?tags= название параметра, автоматический рендер в ХТМЛ и добавление его в урл
+    tags = get_tags(request)
+    if tags is None:
+        recipes = Recipe.objects.order_by('-pub_date').all()
+    else:
+        recipes = Recipe.objects.order_by('-pub_date').filter(tag__name__in=tags)
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

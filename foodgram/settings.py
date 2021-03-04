@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'api',
     'users',
     'taggit',
+    'foodgram',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

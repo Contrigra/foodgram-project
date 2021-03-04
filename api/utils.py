@@ -26,7 +26,7 @@ def get_and_save_RecipeIngredients(ingredients, recipe_pk):
 
 def populate_tags(request):
     """
-    Returns a new request with updated request.POSt with correctly populated
+    Returns a new request with updated request.POST with correctly populated
     tag data (space delimited string)
     """
     _choices = {'breakfast': 'breakfast',

@@ -1,7 +1,6 @@
 import itertools
 import operator
 
-
 def sum_ingredients(ingredient_list):
     key = operator.itemgetter('ingredients__name', 'ingredients__units')
 
@@ -13,3 +12,11 @@ def sum_ingredients(ingredient_list):
         itertools.groupby(sorted(ingredient_list, key=key),
                           key=key)]
     return ingredient_list
+
+def get_tags(request):
+
+    try:
+        tags =  request.GET.getlist('tags')
+    except TypeError:
+        tags = None
+    return tags
