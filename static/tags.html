@@ -1,19 +1,27 @@
 {% load static %}
+{% load recipe_tags %}
 
 <ul class="tags">
+
+{{ received_tags }}
+{{ all_tags }}
+    {% for tag in all_tags %}
+
     <li class="tags__item">
-        <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active"
-           href="#"></a>
+        <a id="breakfast"
+           class="tags__checkbox tags__checkbox_style_{{ tag.colour }} {% if tag.slug in received_tags %}tags__checkbox_active{% endif %}"
+           href="?tags=breakfast"></a>
         <span class="tags__label">Завтрак</span>
     </li>
+{% endfor %}
     <li class="tags__item">
-        <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active"
-           href="#"></a>
+        <a id="lunch" class="tags__checkbox tags__checkbox_style_green {% if 'lunch' in received_tags %}tags__checkbox_active{% endif %}"
+           href="?tags=lunch"></a>
         <span for="lunch" class="tags__label">Обед</span>
     </li>
     <li class="tags__item">
-        <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active"
-           href="#"></a>
+        <a id="dinner" class="tags__checkbox tags__checkbox_style_purple {% if 'dinner' in received_tags %}tags__checkbox_active{% endif %}"
+           href="?tags=dinner"></a>
         <label for="dinner" class="tags__label">Ужин</label>
     </li>
 </ul>

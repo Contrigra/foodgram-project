@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from taggit.managers import TaggableManager
+from taggit.models import TagBase, GenericTaggedItemBase
 
 User = get_user_model()
 
@@ -23,13 +24,27 @@ class Ingredient(models.Model):
         return f'{self.name}, {self.units}'
 
 
+class TimeTag(TagBase):
+    colour = models.CharField(max_length=256)
+
+    class Meta:
+        verbose_name = 'TimeTag'
+        verbose_name_plural = 'TimeTags'
+
+
+class RecipeTag(GenericTaggedItemBase):
+    tag = models.ForeignKey(TimeTag, on_delete=models.CASCADE,
+                            related_name='%(app_label)s_%(class)s_items')
+
+
 class Recipe(models.Model):
     """
     The recipe model, ingredients field is connected to Ingredient model.
     With a subclass of tags
     """
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='recipes')
     title = models.CharField(max_length=256, unique=True)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',
@@ -38,7 +53,7 @@ class Recipe(models.Model):
                                          verbose_name='Ингредиенты')
 
     image = models.ImageField(upload_to='recipes', blank=True, null=True)
-    tag = TaggableManager()
+    tag = TaggableManager(through=RecipeTag)
 
     time = models.PositiveSmallIntegerField(null=True, blank=True)
 

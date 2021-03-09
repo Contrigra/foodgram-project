@@ -16,7 +16,11 @@ def sum_ingredients(ingredient_list):
 def get_tags(request):
 
     try:
-        tags =  request.GET.getlist('tags')
+        tags = request.GET.getlist('tags')
     except TypeError:
         tags = None
     return tags
+
+def get_url_with_tags(request):
+    url_tags_line = request.GET.get('type')
+    return url_tags_line
