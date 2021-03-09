@@ -3,21 +3,21 @@
 
 
 <ul class="tags">
-    {% for type in types %}
+    {% for tag in tags %}
     <li class="tags__item">
-        <a  id="{{ type.name }}"
-            class="tags__checkbox tags__checkbox_style_{{ type.colour }}
-                {% if type.id|string_view in given_types %}tags__checkbox_active{% endif %}"
-            href="?type={% if type.id|string_view in given_types %}
-{% with id=type.id|string_view %}
-{{ url_type_line|cut:id }}
+        <a  id="{{ tag.name }}"
+            class="tags__checkbox tags__checkbox_style_{{ tag.colour }}
+                {% if tag.id|string_view in received_tags %}tags__checkbox_active{% endif %}"
+            href="?tags={% if tag.id|string_view in received_tags %}
+{% with id=tag.id|string_view %}
+{{ url_tags_line|cut:id }}
 {% endwith %}
 {% else %}
-{% with id=type.id|string_view %}
-{{ url_type_line|add_id:id }}
+{% with id=tag.id|string_view %}
+{{ url_tags_line|add_id:id }}
 {% endwith %}{% endif %}">
         </a>
-        <span class="tags__label">{{ type.ru_local|capfirst }} </span>
+        <span class="tags__label">{{ tag.ru_local|capfirst }} </span>
     </li>
     {% endfor %}
 </ul>

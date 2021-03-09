@@ -2,7 +2,6 @@
 {% block content %}
     {% load static %}
     {% load recipe_tags %}
-    {# TODO сделать так, чтобы тэги добавлялись в квери #}
     <main class="main container">
         <div class="main__header">
             <h1 class="main__title">Рецепты</h1>
@@ -14,6 +13,9 @@
             {% endfor %}
 
         </div>
+        {% if no_chosen_tags %}
+            Выберети тэги или вернитесь на главную страницу
+        {% endif %}
 
 
         {% if page.has_other_pages %}

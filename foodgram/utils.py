@@ -14,24 +14,24 @@ def sum_ingredients(ingredient_list):
     return ingredient_list
 
 
-def get_url_with_types(request):
-    url_type_line = request.GET.get('type')
-    return url_type_line
+def get_url_with_tags(request):
+    url_tags_line = request.GET.get('tags')
+    return url_tags_line
 
 
-def get_filter_type(request):
+def get_filter_tags(request):
     try:
-        given_types = list(request.GET.get('type'))
+        given_tags = list(request.GET.get('tags'))
     except TypeError:
-        given_types = None
-    return given_types
+        given_tags = None
+    return given_tags
 
 
-def get_types(data):
-    types_list = []
+def get_tags(data):
+    tags_list = []
     for key in data:
         if key != 'picture' and key != 'picture-clear':
             if data[key] == 'on':
-                types_list.append(key)
-    return types_list
+                tags_list.append(key)
+    return tags_list
 

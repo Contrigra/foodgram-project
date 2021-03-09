@@ -7,61 +7,34 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from api.models import Recipe, TimeTag
-from foodgram.utils import sum_ingredients, get_filter_type, get_url_with_types
+from foodgram.utils import sum_ingredients, get_filter_tags, get_url_with_tags
 from users.models import User, Follow
 
 
-# def index_view(request):
-#     # TODO фильтряация
-#     # TODO чтобы теки работали
-#     received_tags = get_tags(request)
-#     no_tags = False
-#     if len(received_tags) == 0:
-#         recipes = Recipe.objects.order_by('-pub_date').all()
-#     else:
-#         recipes = Recipe.objects.order_by('-pub_date').filter(
-#             tag__name__in=received_tags).distinct()
-#         if not recipes:
-#             no_tags = True
-#
-#     url_tags_line = get_url_with_tags(request)
-#
-#     all_tags = TimeTag.objects.all()
-#
-#
-#     paginator = Paginator(recipes, 6)
-#     page_number = request.GET.get('page')
-#     page = paginator.get_page(page_number)
-#     data = {'page': page, 'recipes': recipes, 'paginator': paginator,
-#             'all_tags': all_tags, 'no_tags': no_tags,
-#             'received_tags': received_tags, 'url_tags_line': url_tags_line}
-#     return render(request, 'index.html',
-#                   data)
 
 def index_view(request):
-    # TODO фильтряация
-    # TODO чтобы теки работали
-    given_types = get_filter_type(request)
-    no_chosen_types = False
-    if given_types is None:
+    """View which renders out the index page, parses tags and paginates data"""
+
+    received_tags = get_filter_tags(request)
+    if received_tags is None:
         recipes = Recipe.objects.order_by('-pub_date').all()
     else:
         recipes = Recipe.objects.order_by('-pub_date').filter(
-            tag__id__in=given_types).distinct()
+            tag__id__in=received_tags).distinct()
         if not recipes:
             no_tags = True
 
-    url_type_line = get_url_with_types(request)
+    url_tags_line = get_url_with_tags(request)
 
-    all_types = TimeTag.objects.all()
+    all_tags = TimeTag.objects.all()
 
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     data = {'page': page, 'recipes': recipes, 'paginator': paginator,
-            'types': all_types,
-            'given_types': given_types, 'url_type_line': url_type_line,
-            'no_chosen_types': no_chosen_types}
+            'tags': all_tags,
+            'received_tags': received_tags, 'url_tags_line': url_tags_line}
+
     return render(request, 'index.html',
                   data)
 
