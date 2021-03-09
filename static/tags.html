@@ -1,24 +1,27 @@
 {% load static %}
 {% load recipe_tags %}
 
+
 <ul class="tags">
-    {{ received_tags }}
-    {% for tag in all_tags %}
+    {% for type in types %}
     <li class="tags__item">
-        <a id="{{ tag.slug }}"
-           class="tags__checkbox tags__checkbox_style_{{ tag.colour }} {% if tag.slug in received_tags %}tags__checkbox_active{% endif %}"
-           href="?tags={% if tag.slug in received_tags %}
-{% with slug=tag.slug %}
-{{ url_tags_line|cut:tags }}
+        <a  id="{{ type.name }}"
+            class="tags__checkbox tags__checkbox_style_{{ type.colour }}
+                {% if type.id|string_view in given_types %}tags__checkbox_active{% endif %}"
+            href="?type={% if type.id|string_view in given_types %}
+{% with id=type.id|string_view %}
+{{ url_type_line|cut:id }}
 {% endwith %}
 {% else %}
-{% with slug=tag.slug %}
-{{ url_tags_line|add_id:tag.slug }}
-{% endwith %}{% endif %}"></a>
-        <span class="tags__label">{{ tag.ru_local }}</span>
+{% with id=type.id|string_view %}
+{{ url_type_line|add_id:id }}
+{% endwith %}{% endif %}">
+        </a>
+        <span class="tags__label">{{ type.ru_local|capfirst }} </span>
     </li>
-{% endfor %}
+    {% endfor %}
 </ul>
+
 
 
 <script src="{% static 'js/api/Api.js' %}"></script>
