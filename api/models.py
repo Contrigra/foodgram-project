@@ -26,6 +26,7 @@ class Ingredient(models.Model):
 
 class TimeTag(TagBase):
     colour = models.CharField(max_length=256)
+    ru_local = models.CharField(max_length=64)
 
     class Meta:
         verbose_name = 'TimeTag'

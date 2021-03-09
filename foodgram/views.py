@@ -5,17 +5,42 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
-from taggit.models import Tag
 
-from api.models import Recipe
+from api.models import Recipe, TimeTag
 from foodgram.utils import sum_ingredients, get_tags, get_url_with_tags
 from users.models import User, Follow
 
 
+# def index_view(request):
+#     # TODO фильтряация
+#     # TODO чтобы теки работали
+#     received_tags = get_tags(request)
+#     no_tags = False
+#     if len(received_tags) == 0:
+#         recipes = Recipe.objects.order_by('-pub_date').all()
+#     else:
+#         recipes = Recipe.objects.order_by('-pub_date').filter(
+#             tag__name__in=received_tags).distinct()
+#         if not recipes:
+#             no_tags = True
+#
+#     url_tags_line = get_url_with_tags(request)
+#
+#     all_tags = TimeTag.objects.all()
+#
+#
+#     paginator = Paginator(recipes, 6)
+#     page_number = request.GET.get('page')
+#     page = paginator.get_page(page_number)
+#     data = {'page': page, 'recipes': recipes, 'paginator': paginator,
+#             'all_tags': all_tags, 'no_tags': no_tags,
+#             'received_tags': received_tags, 'url_tags_line': url_tags_line}
+#     return render(request, 'index.html',
+#                   data)
+
 def index_view(request):
     # TODO фильтряация
-    # TODO https://stackoverflow.com/questions/223990/how-do-i-perform-query-filtering-in-django-templates
-    # ?tags= название параметра, автоматический рендер в ХТМЛ и добавление его в урл
+    # TODO чтобы теки работали
     received_tags = get_tags(request)
     no_tags = False
     if len(received_tags) == 0:
@@ -28,8 +53,8 @@ def index_view(request):
 
     url_tags_line = get_url_with_tags(request)
 
-    all_tags = list(Tag.objects.all())
-    all_tags = [item for t in all_tags for item in t]
+    all_tags = TimeTag.objects.all()
+
 
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
@@ -39,7 +64,6 @@ def index_view(request):
             'received_tags': received_tags, 'url_tags_line': url_tags_line}
     return render(request, 'index.html',
                   data)
-
 
 def profile_view(request, slug):
     # TODO фильтрация по тегам

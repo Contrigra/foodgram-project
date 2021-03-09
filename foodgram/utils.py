@@ -22,5 +22,5 @@ def get_tags(request):
     return tags
 
 def get_url_with_tags(request):
-    url_tags_line = request.GET.get('type')
+    url_tags_line = request.GET.get('tags')
     return url_tags_line
