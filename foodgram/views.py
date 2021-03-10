@@ -11,11 +11,11 @@ from foodgram.utils import sum_ingredients, get_filter_tags, get_url_with_tags
 from users.models import User, Follow
 
 
-
 def index_view(request):
     """View which renders out the index page, parses tags and paginates data"""
 
     received_tags = get_filter_tags(request)
+    no_tags = False
     if received_tags is None:
         recipes = Recipe.objects.order_by('-pub_date').all()
     else:
@@ -25,7 +25,6 @@ def index_view(request):
             no_tags = True
 
     url_tags_line = get_url_with_tags(request)
-
     all_tags = TimeTag.objects.all()
 
     paginator = Paginator(recipes, 6)
@@ -33,7 +32,8 @@ def index_view(request):
     page = paginator.get_page(page_number)
     data = {'page': page, 'recipes': recipes, 'paginator': paginator,
             'tags': all_tags,
-            'received_tags': received_tags, 'url_tags_line': url_tags_line}
+            'received_tags': received_tags, 'url_tags_line': url_tags_line,
+            'no_tags': no_tags}
 
     return render(request, 'index.html',
                   data)
@@ -42,7 +42,18 @@ def index_view(request):
 def profile_view(request, slug):
     # TODO фильтрация по тегам
     author = User.objects.get(username=slug)
-    recipes = Recipe.objects.order_by('-pub_date').filter(author=author)
+    received_tags = get_filter_tags(request)
+    no_tags = False
+    if received_tags is None:
+        recipes = Recipe.objects.order_by('-pub_date').all()
+    else:
+        recipes = Recipe.objects.order_by('-pub_date').filter(
+            tag__id__in=received_tags, author=author).distinct()
+        if not recipes:
+            no_tags = True
+
+    url_tags_line = get_url_with_tags(request)
+    all_tags = TimeTag.objects.all()
     subscribed = (request.user.follower.select_related('author').filter(
         author=author).exists())
 
@@ -52,7 +63,9 @@ def profile_view(request, slug):
 
     return render(request, 'authorRecipe.html',
                   {'author': author, 'page': page, 'paginator': paginator,
-                   'subscribed': subscribed})
+                   'subscribed': subscribed, 'tags': all_tags,
+                   'received_tags': received_tags,
+                   'url_tags_line': url_tags_line, 'no_tags': no_tags})
 
 
 @login_required

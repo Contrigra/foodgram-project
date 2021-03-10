@@ -13,10 +13,9 @@
             {% endfor %}
 
         </div>
-        {% if no_chosen_tags %}
-            Выберети тэги или вернитесь на главную страницу
+        {% if no_tags %}
+            <h2 class="main__title">Выберите категорию, либо по запрошенной категории нет рецептов.</h2>
         {% endif %}
-
 
         {% if page.has_other_pages %}
             {% include "paginator.html" with items=page paginator=paginator %}
