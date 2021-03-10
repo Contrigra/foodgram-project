@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block title %} Профиль {% if  author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}
+                    {{ author.username }}{% endif %} {% endblock %}
 {% block content %}
     {% load static %}
 

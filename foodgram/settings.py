@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'taggit',
     'foodgram',
     'django.contrib.admin',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
