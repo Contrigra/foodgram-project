@@ -4,39 +4,19 @@
 {% block static %}
 {% endblock %}
 {% block content %}
-<main class="main container">
-
-        <div class="single-card">
+    <main class="main container">
         <link rel="stylesheet" href="{% static "/pages/single.css" %}">
-
-            <div class="single-card__info">
-                <div class="single-card__header-info">
-                    <h1 class="single-card__title">Привет!</h1>
-                </div>
-
-
-                <div class="single-card__section">
-                    <h3 class="single-card__section-title">Немного о проекте</h3>
-                    <p class=" single-card__section-text">Выпускной проект Яндекс Практикума.</p>
-                    <p class=" single-card__section-text">Создавайте аккаунт, хоть там и требуется почта, можете написать какой хотите, проверки не будет :)</p>
-                    <p class=" single-card__section-text">Кликайте кнопки, заливайте свои рецепты</p>
-
-                </div>
-                <div class="single-card__section">
-                    <h3 class="single-card__section-title">Во время создания сайта у меня многое произошло</h3>
-                    <div class="single-card__items single-card__items_column">
-                        <p class=" single-card__section-item">Месяц валялся с ковидом</p>
-                        <p class=" single-card__section-item">Выгорел</p>
-                        <p class=" single-card__section-item">Опять зарядился</p>
-                        <p class=" single-card__section-item">Освоил самостоятельно первую самостоятельную тонну документации</p>
-                        <p class=" single-card__section-item">Понял, что фронтенд тоже прикольная штука</p>
-
-                    </div>
-                </div>
-
-
-            </div>
+        <div class="custom-center-block">
+            <p class="custom-text-block">Сутью проекта является создание и хранение рецептов на портале. Дополнительно
+                можно скачать список продуктов для покупки, cледить за рецептами друзей и Сохранять рецепты в список
+                любимых</p>
         </div>
+
+            <div class="custom-center-block">
+            <p class="custom-text-block">Подробнее код можно посмотреть на⠀<a href="https://github.com/Contrigra/foodgram-project">гитхабе проекта</a></p>
+        </div>
+
+
     </main>
 
 {% endblock %}
