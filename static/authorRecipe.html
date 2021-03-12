@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-{% block title %} Профиль {% if  author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}
-                    {{ author.username }}{% endif %} {% endblock %}
+{% block title %} Профиль
+    {% if  author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}
+        {{ author.username }}{% endif %} {% endblock %}
 {% block content %}
     {% load static %}
 
@@ -10,33 +11,35 @@
                 {% if  author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}
                     {{ author.username }}{% endif %}</h1>
 
-            {% include 'tags.html' %}
+            {% include 'recipe/tags.html' %}
 
         </div>
 
         <!--        <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p>-->
 
-        <div class="author-subscribe" data-author="{{ author.id }}" >
-        {% if request.user != author %}
-            <p style="padding: 0 0 2em 0;">
-            {% if subscribed %}
-            <button class="button button_style_light-blue button_size_subscribe button_style_blue" name="subscribe">Отписаться от автора</button>
+        <div class="author-subscribe" data-author="{{ author.id }}">
+            {% if request.user != author %}
+                <p style="padding: 0 0 2em 0;">
+                    {% if subscribed %}
+                        <button class="button button_style_light-blue button_size_subscribe button_style_blue"
+                                name="subscribe">Отписаться от автора
+                        </button>
 
-            {% else %}
-                <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-                    Подписаться на автора
-                </button>
+                    {% else %}
+                        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
+                            Подписаться на автора
+                        </button>
 
-                {% endif %}
-            </p>
-        {% endif %}
+                    {% endif %}
+                </p>
+            {% endif %}
         </div>
         {% if no_tags %}
             <h2 class="main__title">Выберите категорию, либо по запрошенной категории нет рецептов.</h2>
-            {% endif %}
+        {% endif %}
         <div class="card-list">
             {% for recipe in page %}
-                {% include 'card.html' %}
+                {% include 'recipe/card.html' %}
             {% endfor %}
 
 
@@ -65,5 +68,5 @@
 
 
         <script src="{% static 'authorRecipe.js' %}"></script>
-
+    </main>
 {% endblock %}

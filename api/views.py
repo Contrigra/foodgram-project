@@ -38,7 +38,7 @@ def create_recipe_view(request):
 
     form = RecipeForm()
 
-    return render(request, 'formRecipe.html', {'form': form, })
+    return render(request, 'recipe/formRecipe.html', {'form': form, })
 
 
 def list_ingredients_view(request):
@@ -66,7 +66,7 @@ def single_recipe_view(request, slug):
     subscribed = (request.user.follower.select_related('author').filter(
         author=recipe.author).exists())
 
-    return render(request, 'singlePage.html', {
+    return render(request, 'recipe/singlePage.html', {
         'slug': slug,
         'recipe': recipe,
         'recipe_ingredients': recipe_ingredients,
@@ -108,7 +108,7 @@ def recipe_edit_view(request, slug):
     recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
 
     return render(
-        request, "formRecipe.html",
+        request, "recipe/formRecipe.html",
         {'form': form, 'recipe': recipe, 'edit': edit,
          'recipe_ingredients': recipe_ingredients, 'tags': tags},
     )

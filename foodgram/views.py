@@ -84,7 +84,7 @@ def shopping_list_view(request):
     user = User.objects.get(pk=request.user.id)
     shopping_list = user.shoplist.recipes.all()
 
-    return render(request, 'shopList.html',
+    return render(request, 'recipe/shopList.html',
                   {'shopping_list': shopping_list})
 
 
@@ -135,7 +135,7 @@ def favorite_recipe_view(request):
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'favorite.html',
+    return render(request, 'recipe/favorite.html',
                   {'page': page, 'paginator': paginator})
 
 
