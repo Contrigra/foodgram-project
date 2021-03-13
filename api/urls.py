@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 
-# TODO move templates into the app folder.
+
 urlpatterns = [
     path('create-recipe/', views.create_recipe_view, name='create_recipe'),
     path('create-recipe/ingredients', views.list_ingredients_view,

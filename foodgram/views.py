@@ -40,12 +40,11 @@ def index_view(request):
 
 
 def profile_view(request, slug):
-    # TODO фильтрация по тегам
     author = User.objects.get(username=slug)
     received_tags = get_filter_tags(request)
     no_tags = False
     if received_tags is None:
-        recipes = Recipe.objects.order_by('-pub_date').all()
+        recipes = Recipe.objects.order_by('-pub_date').filter(author=author)
     else:
         recipes = Recipe.objects.order_by('-pub_date').filter(
             tag__id__in=received_tags, author=author).distinct()
@@ -54,18 +53,25 @@ def profile_view(request, slug):
 
     url_tags_line = get_url_with_tags(request)
     all_tags = TimeTag.objects.all()
-    subscribed = (request.user.follower.select_related('author').filter(
-        author=author).exists())
-
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    return render(request, 'authorRecipe.html',
-                  {'author': author, 'page': page, 'paginator': paginator,
-                   'subscribed': subscribed, 'tags': all_tags,
+    data = {'author': author, 'page': page, 'paginator': paginator,
+                   'tags': all_tags,
                    'received_tags': received_tags,
-                   'url_tags_line': url_tags_line, 'no_tags': no_tags})
+                   'url_tags_line': url_tags_line, 'no_tags': no_tags}
+
+    if request.user.is_authenticated:
+        subscribed = (request.user.follower.select_related('author').filter(
+            author=author).exists())
+        data['subscribed'] = subscribed
+
+
+
+
+    return render(request, 'recipe/recipe_profile_recipes.html',
+                  data)
 
 
 @login_required
@@ -84,7 +90,7 @@ def shopping_list_view(request):
     user = User.objects.get(pk=request.user.id)
     shopping_list = user.shoplist.recipes.all()
 
-    return render(request, 'recipe/shopList.html',
+    return render(request, 'recipe/recipe_shopList.html',
                   {'shopping_list': shopping_list})
 
 
@@ -119,6 +125,20 @@ def shopping_list_download_view(request):
 
 @login_required
 def favorite_recipe_view(request):
+    # filtering
+    received_tags = get_filter_tags(request)
+    no_tags = False
+    if received_tags is None:
+        recipes = Recipe.objects.order_by('-pub_date').all()
+    else:
+        recipes = Recipe.objects.order_by('-pub_date').filter(
+            tag__id__in=received_tags).distinct()
+        if not recipes:
+            no_tags = True
+    url_tags_line = get_url_with_tags(request)
+    all_tags = TimeTag.objects.all()
+
+    # adding new favourite
     if request.method == 'POST':
         recipe_id = request.body
         recipe_id = recipe_id.decode('utf-8')  # We receive a bytes type data
@@ -131,12 +151,16 @@ def favorite_recipe_view(request):
         return JsonResponse(data)
 
     user = User.objects.get(pk=request.user.id)
-    recipes = user.favorites.recipes.all().order_by('-pub_date')
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'recipe/favorite.html',
-                  {'page': page, 'paginator': paginator})
+
+    return render(request, 'recipe/recipe_favourites.html',
+                  {'page': page, 'recipes': recipes, 'paginator': paginator,
+                   'tags': all_tags,
+                   'received_tags': received_tags,
+                   'url_tags_line': url_tags_line,
+                   'no_tags': no_tags})
 
 
 @login_required
@@ -149,7 +173,6 @@ def favorite_item_delete(request, id):
     return JsonResponse(data)
 
 
-# TODO follow
 @login_required
 def subscriptions_index(request):
     user = request.user
@@ -179,7 +202,6 @@ def follow_view(request, id):
 
 @login_required
 def unfollow_view(request, id):
-    # TODO кнопку отписаться из страницы подписок
     author = get_object_or_404(User, id=id)
     follow_to_delete = Follow.objects.get(user=request.user,
                                           author=author)

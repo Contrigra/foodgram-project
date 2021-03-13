@@ -124,7 +124,6 @@
 
                 <div class="form__group">
                     <span class="form__label">Загрузить фото</span>
-                    {# TODO кажется шаблон не сделан как надо, хз как сделать #}
                     <div class="form__field-group">
                         Сейчас: {{ form.initial.image }}
 
@@ -147,11 +146,4 @@
 
     </main>
 
-    <script src="{% static 'js/config/config.js' %}"></script>
-    <script src="{% static 'js/components/Header.js' %}"></script>
-    <script src="{% static 'js/utils/debouncing.js' %}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    <script src="{% static 'formRecipe.js' %}"></script>
-    </body>
-    </html>
 {% endblock %}

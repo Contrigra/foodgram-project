@@ -1,33 +1,30 @@
 {% extends "base.html" %}
-{% block title %} Рецепты {% endblock %}
+{% block title %} Избранное {% endblock %}
 {% block content %}
     {% load static %}
-    {% load recipe_tags %}
     <main class="main container">
         <div class="main__header">
-            <h1 class="main__title">Рецепты</h1>
-            {% include 'recipe/tags.html' %}
+            <h1 class="main__title">Избранное</h1>
+            {% include 'recipe/recipe_tags.html' %}
+
         </div>
         <div class="card-list">
             {% for recipe in page %}
-                {% include "recipe/card.html" %}
+                {% include "recipe/recipe_card.html" %}
             {% endfor %}
-
         </div>
-        {% if no_tags %}
-            <h2 class="main__title">Выберите категорию, либо по запрошенной категории нет рецептов.</h2>
-        {% endif %}
 
         {% if page.has_other_pages %}
             {% include "paginator.html" with items=page paginator=paginator %}
         {% endif %}
-
     </main>
+
 
     {% csrf_token %}
     <script>
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     </script>
+
     <script src="{% static 'js/components/MainCards.js' %}"></script>
     <script src="{% static 'js/components/Purchases.js' %}"></script>
     <script src="{% static 'js/components/Favorites.js' %}"></script>
@@ -37,7 +34,6 @@
     <script src="{% static 'js/components/Header.js' %}"></script>
 
     <script src="{% static 'js/api/Api.js' %}"></script>
-    <script src="{% static 'indexAuth.js' %}"></script>
-
+    <script src="{% static 'js/indexAuth.js' %}"></script>
 
 {% endblock %}

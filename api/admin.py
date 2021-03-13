@@ -4,7 +4,7 @@ from .models import Ingredient
 from .models import Recipe
 from .models import RecipeIngredient
 
-
+# TODO адмиенку по ТЗ
 class RecipeIngredientInline(admin.TabularInline):
     model = Recipe.ingredients.through
     extra = 1
