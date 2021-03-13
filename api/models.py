@@ -29,7 +29,7 @@ class TimeTag(TagBase):
     ru_local = models.CharField(max_length=64)
 
     class Meta:
-        verbose_name = 'TimeTag'
+        verbose_name = 'Тэг'
         verbose_name_plural = 'TimeTags'
 
 
@@ -67,8 +67,8 @@ class Recipe(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Рецепт'
-        verbose_name_plural = 'Рецепты'
+        verbose_name = 'Recipe'
+        verbose_name_plural = 'Recipes'
 
 
 class RecipeIngredient(models.Model):
@@ -79,7 +79,12 @@ class RecipeIngredient(models.Model):
         verbose_name='ingredient weight', null=False,
         validators=[MinValueValidator(1)], default=10,
         help_text='Добавьте необходимое количество ингредиентов'
+
     )
+
+    class Meta:
+        verbose_name = 'Recipe Ingredient'
+        verbose_name_plural = 'Recipe Ingredients'
 
     def __str__(self):
         return f'{self.recipe.title} - {self.ingredient.name} ' \
@@ -94,6 +99,9 @@ class Shoplist(models.Model):
     def __str__(self):
         return f'{self.user} shopping list'
 
+    class Meta:
+        verbose_name = 'Shopping List'
+        verbose_name_plural = 'Shopping Lists'
 
 class Favorites(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
@@ -102,3 +110,7 @@ class Favorites(models.Model):
 
     def __str__(self):
         return f'{self.user} favourites list'
+
+    class Meta:
+        verbose_name = 'Favorite list'
+        verbose_name_plural = 'Favorite lists'
