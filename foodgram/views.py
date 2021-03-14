@@ -128,10 +128,11 @@ def favorite_recipe_view(request):
     # filtering
     received_tags = get_filter_tags(request)
     no_tags = False
+    user = User.objects.get(pk=request.user.id)
     if received_tags is None:
-        recipes = Recipe.objects.order_by('-pub_date').all()
+        recipes = user.favorites.recipes.all().order_by('-pub_date')
     else:
-        recipes = Recipe.objects.order_by('-pub_date').filter(
+        recipes = user.favorites.recipes.all().order_by('-pub_date').filter(
             tag__id__in=received_tags).distinct()
         if not recipes:
             no_tags = True
