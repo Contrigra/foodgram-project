@@ -13,9 +13,10 @@ class RecipeIngredientInline(admin.TabularInline):
     extra = 1
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-
     list_display = ['title', 'author', 'pub_date']
+    list_filter = ('author', 'title', 'tag')
     inlines = (RecipeIngredientInline,)
 
 
@@ -41,5 +42,5 @@ class IngredientAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-admin.site.register(Recipe, RecipeAdmin)
+
 admin.site.register(RecipeIngredient)
