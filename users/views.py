@@ -16,5 +16,3 @@ def sign_up_view(request):
 
     context['form'] = form
     return render(request, 'registration/sign_up.html', context)
-
-
