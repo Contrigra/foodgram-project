@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import _locale
 import os
 
 from dotenv import load_dotenv
@@ -50,7 +51,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -145,3 +145,10 @@ LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+# Due to different locale at local computer,
+# django dumpdata doesn't work a bit different
+
+_locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
+
+AUTH_USER_MODEL = 'users.User'

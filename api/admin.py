@@ -14,9 +14,7 @@ class RecipeIngredientInline(admin.TabularInline):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    # TODO В списке рецептов вывести название и автора рецепта.
-    # TODO Добавить фильтр по автору, названию рецепта, тегам.
-    # TODO На странице рецепта вывести число добавлений этого рецепта в избранное.
+
     list_display = ['title', 'author', 'pub_date']
     inlines = (RecipeIngredientInline,)
 
