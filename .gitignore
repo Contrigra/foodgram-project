@@ -134,3 +134,4 @@ dmypy.json
 
 #secrets
 .secrets
+secrets
