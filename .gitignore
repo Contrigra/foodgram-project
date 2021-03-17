@@ -132,6 +132,6 @@ dmypy.json
 /media/
 /backup/
 
-#secrets
+#.env
 .secrets
-secrets
+.env

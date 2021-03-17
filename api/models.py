@@ -63,12 +63,16 @@ class Recipe(models.Model):
                                     db_index=True)
     description = models.TextField()
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name = 'Recipe'
         verbose_name_plural = 'Recipes'
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.title
+
+
+
 
 
 class RecipeIngredient(models.Model):
@@ -102,6 +106,8 @@ class Shoplist(models.Model):
     class Meta:
         verbose_name = 'Shopping List'
         verbose_name_plural = 'Shopping Lists'
+
+
 
 class Favorites(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,

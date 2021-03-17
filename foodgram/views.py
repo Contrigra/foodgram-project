@@ -39,14 +39,15 @@ def index_view(request):
                   data)
 
 
+
 def profile_view(request, slug):
     author = User.objects.get(username=slug)
     received_tags = get_filter_tags(request)
     no_tags = False
     if received_tags is None:
-        recipes = Recipe.objects.order_by('-pub_date').filter(author=author)
+        recipes = Recipe.objects.filter(author=author)
     else:
-        recipes = Recipe.objects.order_by('-pub_date').filter(
+        recipes = Recipe.objects.filter(
             tag__id__in=received_tags, author=author).distinct()
         if not recipes:
             no_tags = True
@@ -58,17 +59,14 @@ def profile_view(request, slug):
     page = paginator.get_page(page_number)
 
     data = {'author': author, 'page': page, 'paginator': paginator,
-                   'tags': all_tags,
-                   'received_tags': received_tags,
-                   'url_tags_line': url_tags_line, 'no_tags': no_tags}
+            'tags': all_tags,
+            'received_tags': received_tags,
+            'url_tags_line': url_tags_line, 'no_tags': no_tags}
 
     if request.user.is_authenticated:
         subscribed = (request.user.follower.select_related('author').filter(
             author=author).exists())
         data['subscribed'] = subscribed
-
-
-
 
     return render(request, 'recipe/recipe_profile_recipes.html',
                   data)
@@ -125,14 +123,14 @@ def shopping_list_download_view(request):
 
 @login_required
 def favorite_recipe_view(request):
-    # filtering
+    # filtering # TODO сделать отдельную функцию по фильтрации
     received_tags = get_filter_tags(request)
     no_tags = False
     user = User.objects.get(pk=request.user.id)
     if received_tags is None:
-        recipes = user.favorites.recipes.all().order_by('-pub_date')
+        recipes = user.favorites.recipes.order_by('-pub_date').all()
     else:
-        recipes = user.favorites.recipes.all().order_by('-pub_date').filter(
+        recipes = user.favorites.recipes.order_by('-pub_date').all().filter(
             tag__id__in=received_tags).distinct()
         if not recipes:
             no_tags = True
