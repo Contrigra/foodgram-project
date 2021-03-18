@@ -8,16 +8,24 @@ from .models import Shoplist
 from .models import TimeTag
 
 
+
 class RecipeIngredientInline(admin.TabularInline):
     model = Recipe.ingredients.through
     extra = 1
 
 
+# TODO нельзя чтобы можно было сделать рецепт без ингредиентов через админку
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'pub_date']
+    readonly_fields = ('favorites_count',)
     list_filter = ('author', 'title', 'tag')
     inlines = (RecipeIngredientInline,)
+
+
+    def favorites_count(self, obj):
+        count = Favorites.objects.filter(recipes=obj).count()
+        return count
 
 
 @admin.register(TimeTag)

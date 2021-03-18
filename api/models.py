@@ -51,6 +51,7 @@ class Recipe(models.Model):
                                          through='RecipeIngredient',
                                          related_name='ingredients',
                                          verbose_name='Ингредиенты',
+                                         blank=True,
                                          )
 
     image = models.ImageField(upload_to='recipes', blank=True, null=True)
@@ -70,7 +71,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 

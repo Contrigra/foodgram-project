@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
@@ -6,8 +7,8 @@ from slugify import slugify
 from api.models import Ingredient, Recipe, RecipeIngredient
 from users.models import User
 from .forms import RecipeForm
-from .utils import get_and_save_RecipeIngredients, populate_tags, \
-    get_tag_list
+from .utils import save_RecipeIngredients, populate_tags, \
+    get_tag_list, get_ingredients
 
 
 @login_required
@@ -21,17 +22,23 @@ def create_recipe_view(request):
 
         request = populate_tags(request)
         form = RecipeForm(request.POST or None, request.FILES or None)
+
+        # You need at least one ingredient
+        ingredients = get_ingredients(request.POST)
+        if not ingredients:
+            form.add_error(None,
+                           ValidationError(
+                               'Add at least one ingredient'))
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.slug = slugify(recipe.title)
-
             recipe.save()
             form.save_m2m()
-            # due to intermediatory model for many-to-many relationship of a
+            # due to intermediary model for many-to-many relationship of a
             # Recipe and Ingredients, you have to manually create objects of
             # the said third model.
-            get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
+            save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
 
             return redirect(to='single_recipe',
                             permanent=True, slug=recipe.slug)
@@ -83,11 +90,16 @@ def recipe_edit_view(request, slug):
     if request.user != author:
         return redirect("single_recipe",
                         slug=slug)
-
     request = populate_tags(request)
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe)
 
+    # You need at least one ingredient
+    ingredients = get_ingredients(request.POST)
+    if not ingredients:
+        form.add_error(None,
+                       ValidationError(
+                           'Add at least one ingredient'))
     tags = get_tag_list(form)
 
     if request.method == "POST":
@@ -100,7 +112,7 @@ def recipe_edit_view(request, slug):
             # due to intermediary model for many-to-many relationship of a
             # Recipe and Ingredients, you have to manually create objects of
             # the said third model.
-            get_and_save_RecipeIngredients(request.POST, recipe_pk=recipe.pk)
+            save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
 
             return redirect(to='single_recipe',
                             permanent=True, slug=recipe.slug)

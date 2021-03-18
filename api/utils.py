@@ -1,7 +1,7 @@
 from api.models import RecipeIngredient, Ingredient
 
 
-def get_and_save_RecipeIngredients(ingredients, recipe_pk):
+def save_RecipeIngredients(ingredients, recipe_pk):
     '''
     parse and create RecipeIngredients for manytomany relationship via the
     third model.
@@ -10,16 +10,10 @@ def get_and_save_RecipeIngredients(ingredients, recipe_pk):
     :return: None
     '''
 
-    arr = []
-    for ingredient in ingredients.keys():
-        if ingredient.startswith('nameIngredient_'):
-            _, i = ingredient.split('_')
-            arr.append(
-                [ingredients[ingredient], ingredients[f'valueIngredient_{i}']])
 
-    for name, value in arr:
-        ingredient = Ingredient.objects.get(name__exact=name)
-        obj = RecipeIngredient(recipe_id=recipe_pk, value=value,
+    for elem in ingredients:
+        ingredient = Ingredient.objects.get(name__exact=elem['name'])
+        obj = RecipeIngredient(recipe_id=recipe_pk, value=elem['value'],
                                ingredient_id=ingredient.pk)
         obj.save()
 
@@ -61,3 +55,22 @@ def get_tag_list(form):
             tags.append(_choices[tag.slug])
 
     return tags
+
+def get_ingredients(data):
+    ingredient_numbers = set()
+    ingredients = []
+
+    for key in data:
+        if key.startswith('nameIngredient_'):
+            _, number = key.split('_')
+            ingredient_numbers.add(number)
+    for number in ingredient_numbers:
+        ingredients.append(
+            {
+                'name': data[f'nameIngredient_{number}'],
+                'units': data[f'unitsIngredient_{number}'],
+                'value': int(data[f'valueIngredient_{number}']),
+            }
+        )
+
+    return ingredients
