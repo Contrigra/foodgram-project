@@ -146,10 +146,6 @@
 
     </main>
 
-{% endblock %}
-
-
-{% block js %}
     <script>
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         </script>
@@ -159,4 +155,8 @@
     <script src="{% static 'js/api/Api.js' %}"></script>
     <script src="{% static 'js/formRecipe.js' %}"></script>
     <script src="{% static 'js/indexAuth.js' %}"></script>
-{% endblock js %}
+
+{% endblock %}
+
+
+

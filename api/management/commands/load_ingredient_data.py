@@ -13,6 +13,6 @@ class Command(BaseCommand):
                   encoding='utf-8') as fixture:
             reader = csv.reader(fixture)
             for row in reader:
-                title, measure = row
-                Ingredient.objects.get_or_create(title=title,
-                                                 measure=measure)
+                name, units = row
+                Ingredient.objects.get_or_create(name=name,
+                                                 units=units)
