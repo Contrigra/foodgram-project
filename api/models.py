@@ -49,9 +49,9 @@ class Recipe(models.Model):
     title = models.CharField(max_length=256, unique=True)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',
-                                         blank=True,
                                          related_name='ingredients',
-                                         verbose_name='Ингредиенты')
+                                         verbose_name='Ингредиенты',
+                                         )
 
     image = models.ImageField(upload_to='recipes', blank=True, null=True)
     tag = TaggableManager(through=RecipeTag)

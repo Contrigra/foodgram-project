@@ -22,7 +22,9 @@
 
             <p class="card__text"><span class="icon-user"></span> <a
                     href="{% url 'profile' slug=recipe.author.username %}"
-                    style="color: black">{{ recipe.author.first_name }} {{ recipe.author.last_name }}</a>
+                    style="color: black">
+                {% if recipe.author.first_name %}{{ recipe.author.first_name }} {{ recipe.author.last_name }}{% else %}
+                    {{ recipe.author.username }}{% endif %}</a>
             </p>
         </div>
     </div>
@@ -45,12 +47,12 @@
             </button>
         {% endif %}
 
-    {% if request.user.is_authenticated %}
-        <button class="button button_style_none" name="favorites"
-                {% if recipe not in request.user.favorites.recipes.all %} data-out="true" {% endif %}>
-            <span class="icon-favorite {% if recipe in request.user.favorites.recipes.all %}icon-favorite_active{% endif %}"></span>
-        </button>
-    {% endif %}
+        {% if request.user.is_authenticated %}
+            <button class="button button_style_none" name="favorites"
+                    {% if recipe not in request.user.favorites.recipes.all %} data-out="true" {% endif %}>
+                <span class="icon-favorite {% if recipe in request.user.favorites.recipes.all %}icon-favorite_active{% endif %}"></span>
+            </button>
+        {% endif %}
     </div>
 </div>
 
