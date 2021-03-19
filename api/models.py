@@ -25,6 +25,10 @@ class Ingredient(models.Model):
 
 
 class TimeTag(TagBase):
+    """
+    Tag model for recipe types
+    """
+
     colour = models.CharField(max_length=256)
     ru_local = models.CharField(max_length=64)
 
@@ -41,7 +45,7 @@ class RecipeTag(GenericTaggedItemBase):
 class Recipe(models.Model):
     """
     The recipe model, ingredients field is connected to Ingredient model.
-    With a subclass of tags
+    Tag field uses built in features of Taggit library and extended model TimeTag
     """
 
     author = models.ForeignKey(User, on_delete=models.CASCADE,
@@ -73,8 +77,6 @@ class Recipe(models.Model):
         return self.title
 
 
-
-
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, null=True,
@@ -96,6 +98,8 @@ class RecipeIngredient(models.Model):
 
 
 class Shoplist(models.Model):
+    """ A user's shopping list"""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
                                 null=True)
     recipes = models.ManyToManyField(Recipe, blank=True)
@@ -108,8 +112,9 @@ class Shoplist(models.Model):
         verbose_name_plural = 'Shopping Lists'
 
 
-
 class Favorites(models.Model):
+    """A list of a user's favored recipes"""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,
                                 null=True)
     recipes = models.ManyToManyField(Recipe, blank=True)

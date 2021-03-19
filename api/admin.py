@@ -15,12 +15,19 @@ class RecipeIngredientInlineFormSet(BaseInlineFormSet):
     all recipes require at least one ingredient"""
 
     def clean(self):
+
+        # self.cleaned_data is a bit dirty,
+        # It somehow sends an empty dictionary
+        # if admin did not put any value in an empty inline
+        not_for_delete = []
         for inline in self.cleaned_data:
-            try:
-                print(inline['ingredient'])
-            except KeyError:
-                raise ValidationError(
-                    ('Recipe requires at least one ingredient'))
+            if bool(inline) is True:
+                if inline['DELETE'] is False:
+                    not_for_delete.append(inline)
+
+        if len(not_for_delete) == 0:
+                    raise ValidationError(
+                        ('Recipe requires at least one ingredient'))
 
 
 class RecipeIngredientInline(admin.TabularInline):
