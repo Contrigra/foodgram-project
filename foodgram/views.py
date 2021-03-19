@@ -7,7 +7,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from api.models import Recipe, TimeTag
-from foodgram.utils import sum_ingredients, get_filter_tags, get_url_with_tags
+from foodgram.utils import sum_ingredients, get_filter_tags, get_url_with_tags, \
+    get_tag_status
 from users.models import User, Follow
 
 
@@ -15,14 +16,13 @@ def index_view(request):
     """View which renders out the index page, parses tags and paginates data"""
 
     received_tags = get_filter_tags(request)
-    no_tags = False
     if received_tags is None:
-        recipes = Recipe.objects.order_by('-pub_date').all()
+        recipes = Recipe.objects.all()
     else:
-        recipes = Recipe.objects.order_by('-pub_date').filter(
+        recipes = Recipe.objects.filter(
             tag__id__in=received_tags).distinct()
-        if not recipes:
-            no_tags = True
+
+    no_tags = get_tag_status(recipes)
 
     url_tags_line = get_url_with_tags(request)
     all_tags = TimeTag.objects.all()
@@ -39,19 +39,17 @@ def index_view(request):
                   data)
 
 
-
 def profile_view(request, slug):
     author = User.objects.get(username=slug)
     received_tags = get_filter_tags(request)
-    no_tags = False
+
     if received_tags is None:
         recipes = Recipe.objects.filter(author=author)
     else:
         recipes = Recipe.objects.filter(
             tag__id__in=received_tags, author=author).distinct()
-        if not recipes:
-            no_tags = True
 
+    no_tags = get_tag_status(recipes)
     url_tags_line = get_url_with_tags(request)
     all_tags = TimeTag.objects.all()
     paginator = Paginator(recipes, 6)
@@ -123,17 +121,16 @@ def shopping_list_download_view(request):
 
 @login_required
 def favorite_recipe_view(request):
-    # filtering # TODO сделать отдельную функцию по фильтрации
     received_tags = get_filter_tags(request)
-    no_tags = False
     user = User.objects.get(pk=request.user.id)
+
     if received_tags is None:
-        recipes = user.favorites.recipes.order_by('-pub_date').all()
+        recipes = user.favorites.recipes.all()
     else:
-        recipes = user.favorites.recipes.order_by('-pub_date').all().filter(
+        recipes = user.favorites.recipes.all().filter(
             tag__id__in=received_tags).distinct()
-        if not recipes:
-            no_tags = True
+
+    no_tags = get_tag_status(recipes)
     url_tags_line = get_url_with_tags(request)
     all_tags = TimeTag.objects.all()
 

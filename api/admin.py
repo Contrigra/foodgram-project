@@ -15,7 +15,6 @@ class RecipeIngredientInlineFormSet(BaseInlineFormSet):
     all recipes require at least one ingredient"""
 
     def clean(self):
-
         # self.cleaned_data is a bit dirty,
         # It somehow sends an empty dictionary
         # if admin did not put any value in an empty inline

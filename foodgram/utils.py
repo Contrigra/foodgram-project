@@ -1,5 +1,9 @@
 import itertools
 import operator
+from typing import Tuple
+
+from api.models import Recipe
+
 
 def sum_ingredients(ingredient_list):
     key = operator.itemgetter('ingredients__name', 'ingredients__units')
@@ -35,3 +39,11 @@ def get_tags(data):
                 tags_list.append(key)
     return tags_list
 
+
+def get_tag_status(recipes) -> bool:
+    if not recipes:
+        no_tags = True
+    else:
+        no_tags = False
+
+    return no_tags

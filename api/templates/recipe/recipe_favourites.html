@@ -13,7 +13,9 @@
                 {% include "recipe/recipe_card.html" %}
             {% endfor %}
         </div>
-
+        {% if no_tags %}
+            <h2 class="main__title">Таких рецептов нет! Выбери другую категорию</h2>
+        {% endif %}
         {% if page.has_other_pages %}
             {% include "paginator.html" with items=page paginator=paginator %}
         {% endif %}
