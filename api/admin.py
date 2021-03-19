@@ -29,7 +29,6 @@ class RecipeIngredientInline(admin.TabularInline):
     formset = RecipeIngredientInlineFormSet
 
 
-# TODO нельзя чтобы можно было сделать рецепт без ингредиентов через админку
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'pub_date']
