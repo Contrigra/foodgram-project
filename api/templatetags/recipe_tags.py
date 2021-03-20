@@ -2,6 +2,7 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter()
 def add_id(url, tag_id):
     url_line = str(tag_id)

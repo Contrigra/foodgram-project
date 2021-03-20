@@ -15,25 +15,26 @@
 
         </div>
 
-    {% if request.user.is_authenticated %}
-        <div class="author-subscribe" data-author="{{ author.id }}">
-            {% if request.user != author %}
-                <p style="padding: 0 0 2em 0;">
-                    {% if subscribed %}
-                        <button class="button button_style_light-blue button_size_subscribe button_style_blue"
-                                name="subscribe">Отписаться от автора
-                        </button>
+        {% if request.user.is_authenticated %}
+            <div class="author-subscribe" data-author="{{ author.id }}">
+                {% if request.user != author %}
+                    <p style="padding: 0 0 2em 0;">
+                        {% if subscribed %}
+                            <button class="button button_style_light-blue button_size_subscribe button_style_blue"
+                                    name="subscribe">Отписаться от автора
+                            </button>
 
-                    {% else %}
-                        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-                            Подписаться на автора
-                        </button>
+                        {% else %}
+                            <button class="button button_style_light-blue button_size_subscribe" name="subscribe"
+                                    data-out>
+                                Подписаться на автора
+                            </button>
 
-                    {% endif %}
-                </p>
-            {% endif %}
-        </div>
-    {% endif %}
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
         {% if no_tags %}
             <h2 class="main__title">По запрошеным категориям нет рецептов</h2>
         {% endif %}
@@ -54,29 +55,29 @@
 {% endblock %}
 {% block js %}
 
-        <script>
+    <script>
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     </script>
-        <script src="{% static "js/config/config.js" %}"></script>
-        <script src="{% static "js/components/MainCards.js" %}"></script>
+    <script src="{% static "js/config/config.js" %}"></script>
+    <script src="{% static "js/components/MainCards.js" %}"></script>
 
-        <script src="{% static "js/components/Purchases.js" %}"></script>
-        <script src="{% static "js/components/Favorites.js" %}"></script>
+    <script src="{% static "js/components/Purchases.js" %}"></script>
+    <script src="{% static "js/components/Favorites.js" %}"></script>
 
-        <script src="{% static "js/components/Header.js" %}"></script>
+    <script src="{% static "js/components/Header.js" %}"></script>
 
-        <script src="{% static "js/api/Api.js" %}"></script>
-        <script src="{% static "js/components/Subscribe.js" %}"></script>
-        <script src="{% static "js/components/AuthorRecipe.js" %}"></script>
-        <script src="{% static "js/authorRecipe.js" %}"></script>
+    <script src="{% static "js/api/Api.js" %}"></script>
+    <script src="{% static "js/components/Subscribe.js" %}"></script>
+    <script src="{% static "js/components/AuthorRecipe.js" %}"></script>
+    <script src="{% static "js/authorRecipe.js" %}"></script>
 
-        {% if user.is_authenticated %}
-            <script src="{% static "js/singlePage.js" %}"></script>
-            <script src="{% static "js/indexAuth.js" %}"></script>
-        {% else %}
-            <script src="{% static "js/singlePageNotAuth.js" %}"></script>
-            <script src="{% static "js/indexNotAuth.js" %}"></script>
-        {% endif %}
+    {% if user.is_authenticated %}
+        <script src="{% static "js/singlePage.js" %}"></script>
+        <script src="{% static "js/indexAuth.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/singlePageNotAuth.js" %}"></script>
+        <script src="{% static "js/indexNotAuth.js" %}"></script>
+    {% endif %}
 
 
 {% endblock js %}

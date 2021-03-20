@@ -13,5 +13,3 @@ class Command(BaseCommand):
                                       colour='green', ru_local='Обед')
         TimeTag.objects.get_or_create(name='dinner', slug='dinner',
                                       colour='purple', ru_local='Ужин')
-
-

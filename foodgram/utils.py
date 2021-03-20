@@ -1,8 +1,5 @@
 import itertools
 import operator
-from typing import Tuple
-
-from api.models import Recipe
 
 
 def sum_ingredients(ingredient_list):

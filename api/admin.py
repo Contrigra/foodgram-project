@@ -25,8 +25,8 @@ class RecipeIngredientInlineFormSet(BaseInlineFormSet):
                     not_for_delete.append(inline)
 
         if len(not_for_delete) == 0:
-                    raise ValidationError(
-                        ('Recipe requires at least one ingredient'))
+            raise ValidationError(
+                ('Recipe requires at least one ingredient'))
 
 
 class RecipeIngredientInline(admin.TabularInline):

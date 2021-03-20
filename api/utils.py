@@ -10,7 +10,6 @@ def save_RecipeIngredients(ingredients, recipe_pk):
     :return: None
     '''
 
-
     for elem in ingredients:
         ingredient = Ingredient.objects.get(name__exact=elem['name'])
         obj = RecipeIngredient(recipe_id=recipe_pk, value=elem['value'],
@@ -55,6 +54,7 @@ def get_tag_list(form):
             tags.append(_choices[tag.slug])
 
     return tags
+
 
 def get_ingredients(data):
     ingredient_numbers = set()

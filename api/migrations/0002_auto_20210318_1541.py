@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('api', '0001_initial'),
     ]
@@ -13,6 +12,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='ingredients',
-            field=models.ManyToManyField(related_name='ingredients', through='api.RecipeIngredient', to='api.Ingredient', verbose_name='Ингредиенты'),
+            field=models.ManyToManyField(related_name='ingredients',
+                                         through='api.RecipeIngredient',
+                                         to='api.Ingredient',
+                                         verbose_name='Ингредиенты'),
         ),
     ]

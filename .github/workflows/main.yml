@@ -50,3 +50,46 @@ jobs:
           push: True
           tags: contrigra/foodgram:latest
   
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    name: Deploy to the production server
+    runs-on: ubuntu-latest
+    needs: build_and_push_to_docker_hub
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          source: "./.env,nginx/nginx.conf,./docker-compose.yaml"
+          target: "/home/contrigra/code"
+
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ~
+            cd ./code
+            sudo docker pull contrigra/foodgram:latest
+            sudo docker-compose up --force-recreate -d web
+
+  send_message:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!
+

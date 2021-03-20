@@ -14,7 +14,7 @@ services:
       - ./.env
 
   web:
-    image: Contrigra/foodgram:latest
+    image: contrigra/foodgram:latest
     restart: always
     volumes:
       - static_volume:/code/static

@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -24,7 +23,8 @@ urlpatterns = [
     path('profile/<slug:slug>/', views.profile_view, name='profile'),
     path('subscriptions', views.subscriptions_index, name='subscriptions'),
     path('subscriptions/<int:id>/follow/', views.follow_view, name='follows'),
-    path('subscriptions/<int:id>/unfollow/', views.unfollow_view, name='unfollow'),
+    path('subscriptions/<int:id>/unfollow/', views.unfollow_view,
+         name='unfollow'),
 
 ]
 
