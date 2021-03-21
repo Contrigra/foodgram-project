@@ -45,7 +45,8 @@ class RecipeTag(GenericTaggedItemBase):
 class Recipe(models.Model):
     """
     The recipe model, ingredients field is connected to Ingredient model.
-    Tag field uses built in features of Taggit library and extended model TimeTag
+    Tag field uses built in features of Taggit library
+    and extended model TimeTag
     """
 
     author = models.ForeignKey(User, on_delete=models.CASCADE,
@@ -86,7 +87,7 @@ class RecipeIngredient(models.Model):
         validators=[MinValueValidator(1)], default=10,
         help_text='Добавьте необходимое количество ингредиентов'
 
-    )
+        )
 
     class Meta:
         verbose_name = 'Recipe Ingredient'

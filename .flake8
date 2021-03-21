@@ -1,0 +1,2 @@
+[flake8]
+exclude = .git, ./api/migrations, ./foodgram/settings.py, ./users/migrations

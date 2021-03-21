@@ -7,8 +7,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from api.models import Recipe, TimeTag
-from foodgram.utils import sum_ingredients, get_filter_tags, get_url_with_tags, \
-    get_tag_status
+from foodgram.utils import sum_ingredients, get_filter_tags, \
+    get_url_with_tags, get_tag_status
 from users.models import User, Follow
 
 
@@ -103,9 +103,10 @@ def shopping_list_item_delete(request, id):
 @login_required
 def shopping_list_download_view(request):
     user = User.objects.get(pk=request.user.id)
-    ingredient_list = list(user.shoplist.recipes.values('ingredients__name',
-                                                        'recipeingredient__value',
-                                                        'ingredients__units'))
+    ingredient_list = list(user.shoplist.recipes.values(
+        'ingredients__name',
+        'recipeingredient__value',
+        'ingredients__units'))
     ingredient_list = sum_ingredients(ingredient_list)
     with open(f'{user.username}_shopping_list.txt', 'w+',
               encoding='utf-8') as txt:
