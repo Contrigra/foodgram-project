@@ -8,6 +8,7 @@ volumes:
 services:
   db:
     image: postgres:12.4
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -29,7 +30,7 @@ services:
     depends_on:
       - web
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
       - static_volume:/code/static
