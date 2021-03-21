@@ -65,7 +65,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
-          source: "./.env,nginx/default.conf,./docker-compose.yaml"
+          source: "./.env,nginx/nginx.conf,./docker-compose.yaml"
           target: "/home/contrigra/code"
 
       - name: executing remote ssh commands to deploy
