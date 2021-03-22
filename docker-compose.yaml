@@ -17,6 +17,8 @@ services:
   web:
     image: contrigra/foodgram:latest
     restart: always
+    # ports:
+    # - "8000:8000"
     volumes:
       - static_volume:/code/static
       - media_volume:/code/media
@@ -30,9 +32,9 @@ services:
     depends_on:
       - web
     ports:
-      - "80:80"
+      - 80:80
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/code/static
       - media_volume:/code/media
     restart: always
