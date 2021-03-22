@@ -17,8 +17,6 @@ services:
   web:
     image: contrigra/foodgram:latest
     restart: always
-    # ports:
-    # - "8000:8000"
     volumes:
       - static_volume:/code/static
       - media_volume:/code/media
