@@ -40,7 +40,3 @@ services:
       - media_volume:/code/media
     restart: always
 
-  volumes:
-    postgres_data:
-    static_volume:
-    media_volume:
