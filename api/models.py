@@ -59,7 +59,7 @@ class Recipe(models.Model):
                                          blank=True,
                                          )
 
-    image = models.ImageField(upload_to='recipes', blank=True, null=True)
+    image = models.ImageField(upload_to='recipes')
     tag = TaggableManager(through=RecipeTag)
 
     time = models.PositiveSmallIntegerField(null=True, blank=True)
