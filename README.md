@@ -2,7 +2,7 @@
 
 ## Website URL
 
-www.foodgram.cloud
+http://www.foodgram.cloud/
 
 ## Docker Compose:
 docker-compose up --build
