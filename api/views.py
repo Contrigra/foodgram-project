@@ -70,7 +70,8 @@ def single_recipe_view(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     tags = recipe.tag.names()
-    subscribed = (request.user.follower.select_related('author').filter(
+    if request.user.is_authenticated:
+        subscribed = (request.user.follower.select_related('author').filter(
         author=recipe.author).exists())
 
     return render(request, 'recipe/recipe_singlePage.html', {
