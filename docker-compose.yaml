@@ -17,10 +17,9 @@ services:
   web:
     image: contrigra/foodgram:latest
     restart: always
-    command: bash -c 'python manage.py collectstatic --noinput'
     volumes:
-      - static_volume:/code/static/
-      - media_volume:/code/media/
+      - static_volume:/static
+      - media_volume:/media
     ports:
       - "8000:8000"
     depends_on:
