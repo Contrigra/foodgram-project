@@ -52,8 +52,6 @@ def list_ingredients_view(request):
     """
     Autofill for a dropdown field of ingredients for recipe creation form
     """
-    # TODO проверить, работает ли istartswith с postgreSQL корректно.
-    #  MySQL, вроде не работает не с ASCII символами
 
     text = request.GET.get('query')
     ingredients = list(Ingredient.objects.filter(
@@ -72,7 +70,7 @@ def single_recipe_view(request, slug):
     tags = recipe.tag.names()
     if request.user.is_authenticated:
         subscribed = (request.user.follower.select_related('author').filter(
-        author=recipe.author).exists())
+            author=recipe.author).exists())
 
     return render(request, 'recipe/recipe_singlePage.html', {
         'slug': slug,
@@ -124,7 +122,7 @@ def recipe_edit_view(request, slug):
         request, "recipe/recipe_form.html",
         {'form': form, 'recipe': recipe, 'edit': edit,
          'recipe_ingredients': recipe_ingredients, 'tags': tags},
-    )
+        )
 
 
 def delete_recipe_view(request, slug):
