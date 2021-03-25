@@ -41,11 +41,7 @@
                 </button>
             {% endif %}
         {% endif %}
-        {% if request.user.is_anonymous %}
-            <button class="button button_style_light-blue" name="purchases" data-out>
-                <span class="icon-plus button__icon"></span>Добавить в покупки
-            </button>
-        {% endif %}
+
 
         {% if request.user.is_authenticated %}
             <button class="button button_style_none" name="favorites"

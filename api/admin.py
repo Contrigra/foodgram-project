@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
 
+from users.models import Follow
 from .models import Favorites
 from .models import Ingredient
 from .models import Recipe
@@ -17,7 +18,7 @@ class RecipeIngredientInlineFormSet(BaseInlineFormSet):
     def clean(self):
         # self.cleaned_data is a bit dirty,
         # It somehow sends an empty dictionary
-        # if admin did not put any value in an empty inline
+        # if the admin does not put any value in an empty inline
         not_for_delete = []
         for inline in self.cleaned_data:
             if bool(inline) is True:
@@ -37,6 +38,7 @@ class RecipeIngredientInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
+    search_fields = ('author__username', 'title', 'tag__name')
     list_display = ['title', 'author', 'pub_date']
     readonly_fields = ('favorites_count',)
     list_filter = ('author', 'title', 'tag')
@@ -67,6 +69,11 @@ class FavoritesAdmin(admin.ModelAdmin):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     search_fields = ('name',)
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    search_fields = ('author__username', 'user__username',)
 
 
 admin.site.register(RecipeIngredient)

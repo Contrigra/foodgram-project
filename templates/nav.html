@@ -28,8 +28,8 @@
                             href="{% url 'shopping_list' %}" class="nav__link link">Список
                         покупок</a>
                         <span class="badge badge_style_blue nav__badge"
-                              id="counter">{% if user.is_authenticated %}
-                            {{ request.user.shoplist.recipes.all.count }}{% endif %}</span>
+                              id="counter">{% if request.user.shoplist.recipes.all.count > 0 %}{% if user.is_authenticated %}
+                            {{ request.user.shoplist.recipes.all.count }}{% endif %}{% endif %}</span>
                     </li>
                 </ul>
 
