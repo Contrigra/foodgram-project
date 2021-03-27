@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
@@ -29,6 +30,8 @@ def create_recipe_view(request):
             form.add_error(None,
                            ValidationError(
                                'Add at least one ingredient'))
+
+
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
@@ -38,13 +41,28 @@ def create_recipe_view(request):
             # due to intermediary model for many-to-many relationship of a
             # Recipe and Ingredients, you have to manually create objects of
             # the said third model.
-            save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
+            try:
+                save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
+
+            except IntegrityError:
+                recipe_form = RecipeForm(request.POST or None,
+                                         files=request.FILES,
+                                         instance=recipe)
+                data = {'form': recipe_form,
+                        'message': 'Нельзя создать с рецепт с двумя'
+                                   ' одинаковыми ингредиентами',
+                        'ingredient_error': True, 'recipe': recipe}
+
+                recipe.delete()
+                return render(request, 'recipe/recipe_form.html', data)
 
             return redirect(to='single_recipe',
                             permanent=True, slug=recipe.slug)
 
-    form = RecipeForm()
+        else:
+            return render(request, 'recipe/recipe_form.html', {'form': form, })
 
+    form = RecipeForm()
     return render(request, 'recipe/recipe_form.html', {'form': form, })
 
 

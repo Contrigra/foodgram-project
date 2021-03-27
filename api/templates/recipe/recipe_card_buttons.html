@@ -1,0 +1,21 @@
+    <div class="card__footer">
+        {% if request.user.is_authenticated %}
+            {% if recipe not in request.user.shoplist.recipes.all %}
+                <button class="button button_style_light-blue" name="purchases" data-out>
+                    <span class="icon-plus button__icon"></span>Добавить в покупки
+                </button>
+            {% else %}
+                <button class="button button_style_light-blue-outline" name="purchases"><span
+                        class="icon-check button__icon"></span> Рецепт добавлен
+                </button>
+            {% endif %}
+
+
+
+
+            <button class="button button_style_none" name="favorites"
+                    {% if recipe not in request.user.favorites.recipes.all %} data-out="true" {% endif %}>
+                <span class="icon-favorite {% if recipe in request.user.favorites.recipes.all %}icon-favorite_active{% endif %}"></span>
+            </button>
+        {% endif %}
+    </div>
