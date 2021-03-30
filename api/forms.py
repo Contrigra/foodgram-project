@@ -1,10 +1,18 @@
-from django.forms import ModelForm
+from django import forms
 
 from .models import Recipe
 
 
-class RecipeForm(ModelForm):
+class RecipeForm(forms.ModelForm):
+    image = forms.ImageField(
+        required=True,
+        label='Изображение',
+        error_messages={'required': 'Пожалуйста, загрузите изображение'}
+        )
+
     class Meta:
         model = Recipe
         fields = ('title', 'image', 'tag', 'time', 'ingredients',
                   'description')
+
+

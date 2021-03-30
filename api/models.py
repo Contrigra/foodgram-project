@@ -62,10 +62,13 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes')
     tag = TaggableManager(through=RecipeTag)
 
-    # TODO проверить в бою
-    time = models.PositiveSmallIntegerField(null=False,
-                                            validators=[MinValueValidator(1)],
-                                            help_text='Укажите время в минутах')
+    time = models.PositiveSmallIntegerField(
+        null=False,
+        validators=[MinValueValidator
+                    (1, message='Время должно быть равно 1 или более минут')],
+        help_text='Укажите время '
+                  'в минутах',
+        default=10)
 
     slug = models.SlugField(unique=True, max_length=256)
     pub_date = models.DateTimeField('date published', auto_now_add=True,
@@ -95,7 +98,7 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = 'Recipe Ingredient'
         verbose_name_plural = 'Recipe Ingredients'
-        # TODO пофиксить, чтобы сервер не ложился. Как сделать так, чтобы в форме до сохранения рецепта была проверка что это возможно.
+
         constraints = [
             models.UniqueConstraint(fields=('recipe', 'ingredient',),
                                     name='Unique Ingredients')

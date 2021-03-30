@@ -17,6 +17,22 @@ def save_RecipeIngredients(ingredients, recipe_pk):
         obj.save()
 
 
+def edit_RecipeIngredients(ingredients, recipe_pk):
+    """
+    Parses ingredients and creates new recipe-ingredient relationships if
+    there are new ingredients for a recipe
+    :param ingredients: a list of ingredients in a receiving form
+    :param recipe_pk: Recipe
+
+    """
+
+    for elem in ingredients:
+        ingredient = Ingredient.objects.get(name__exact=elem['name'])
+        obj = RecipeIngredient(recipe_id=recipe_pk, value=elem['value'],
+                                   ingredient_id=ingredient.pk)
+        obj.save()
+
+
 def populate_tags(request):
     """
     Returns a new request with updated request.POST with correctly populated
@@ -70,7 +86,7 @@ def get_ingredients(data):
                 'name': data[f'nameIngredient_{number}'],
                 'units': data[f'unitsIngredient_{number}'],
                 'value': int(data[f'valueIngredient_{number}']),
-            }
-        )
+                }
+            )
 
     return ingredients

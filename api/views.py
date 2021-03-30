@@ -31,7 +31,6 @@ def create_recipe_view(request):
                            ValidationError(
                                'Add at least one ingredient'))
 
-
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
@@ -101,46 +100,67 @@ def single_recipe_view(request, slug):
 
 @login_required
 def recipe_edit_view(request, slug):
+    """
+    View function for a recipe edit page. Parses tags from checkboxes
+    input, prepares the data for the tag field. Ingredient validation
+    """
+
     recipe = get_object_or_404(Recipe, slug=slug)
     author = get_object_or_404(User, username=recipe.author)
-    edit = True
-
     if request.user != author:
         return redirect("single_recipe",
                         slug=slug)
+
     request = populate_tags(request)
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe)
 
-    # You need at least one ingredient
-    ingredients = get_ingredients(request.POST)
-    if not ingredients:
-        form.add_error(None,
-                       ValidationError(
-                           'Add at least one ingredient'))
+    current_recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+    current_recipe_tags = recipe.tag.all()
     tags = get_tag_list(form)
-
     if request.method == "POST":
+        ingredients = get_ingredients(request.POST)
+        if not ingredients:
+            form.add_error(None,
+                           ValidationError(
+                               'Требуется хотя бы один ингредиент'))
         if form.is_valid():
+
+            current_recipe_ingredients.delete()
+            current_recipe_tags.delete()
+
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.slug = slugify(recipe.title)
             recipe.save()
             form.save_m2m()
-            # due to intermediary model for many-to-many relationship of a
-            # Recipe and Ingredients, you have to manually create objects of
-            # the said third model.
-            save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
+
+            try:
+                save_RecipeIngredients(ingredients, recipe_pk=recipe.pk)
+
+            except IntegrityError:
+                recipe_form = form
+
+                recipe_ingredients = RecipeIngredient.objects.filter(
+                    recipe=recipe)
+
+                data = {'form': recipe_form,
+                        'message': 'Нельзя создать с рецепт с двумя'
+                                   ' одинаковыми ингредиентами', 'edit': True,
+                        'ingredient_error': True, 'recipe': recipe,
+                        'tags': tags, 'recipe_ingredients': recipe_ingredients}
+
+                return render(request, 'recipe/recipe_form.html', data)
 
             return redirect(to='single_recipe',
                             permanent=True, slug=recipe.slug)
 
     recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+    data = {'form': form, 'recipe': recipe, 'edit': True,
+            'recipe_ingredients': recipe_ingredients, 'tags': tags}
 
     return render(
-        request, "recipe/recipe_form.html",
-        {'form': form, 'recipe': recipe, 'edit': edit,
-         'recipe_ingredients': recipe_ingredients, 'tags': tags},
+        request, "recipe/recipe_form.html", data
         )
 
 

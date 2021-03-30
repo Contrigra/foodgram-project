@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Создание рецепта{% endblock %}
+{% block title %}{% if  edit %}Редактирование рецепта {% else %}Создание рецепта{% endif %}{% endblock %}
 {% load static %}
 {% block content %}
 
     <main class="main container">
         <link rel="stylesheet" href={% static "pages/form.css" %}>
         <div class="main__header">
-            <h1 class="main__title">{% if not edit %}Создание рецепта {% else %}Редактирование рецепта</h1>
-            {% endif %}
+            <h1 class="main__title">{% if  edit %}Редактирование рецепта {% else %}Создание рецепта{% endif %}</h1>
+
         </div>
         <div class="form-container">
             <form class="form" method="post" enctype="multipart/form-data">
@@ -105,15 +105,17 @@
 
                     <label for="id_time" class="form__label">Время
                         приготовления</label>
-                    {% if form.errors.time %}
-                        {{ form.errors.time }}
-                    {% endif %}
+
                     <div class="form__field-group form__field-group_time">
                         <input type="text" id="id_time" name="time"
                                class="form__input" value="{{ form.initial.time }}">
                         <label for="id_time" class="form__label">минут</label>
-                        <span class="form__error"></span>
+                                            {% if form.time.errors  %}
+                        <span class="form__error">{{ form.time.errors.0 }}</span>
+                        {% endif %}
+
                     </div>
+
                 </div>
 
                 <div class="form__group">
@@ -133,7 +135,10 @@
 
                         <input type="file" name="image"
                                id="id_file" class="form__file-button">
-                        <span class="form__error"></span>
+                                                                    {% if form.errors.image %}
+                        <span class="form__error">{{ form.errors.image.0 }}</span>
+                        {% endif %}
+
                     </div>
                 </div>
 
