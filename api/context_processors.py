@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 
 from api.models import TimeTag
+from foodgram.settings import OBJECT_PER_PAGE
 from foodgram.utils import get_filter_tags, get_url_with_tags, obtain_recipes
 
 
@@ -26,7 +27,7 @@ def filtering(request):
 
         all_tags = TimeTag.objects.all()
 
-        paginator = Paginator(recipes, 6)
+        paginator = Paginator(recipes, OBJECT_PER_PAGE)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 

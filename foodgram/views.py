@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from api.models import Recipe
+from foodgram.settings import OBJECT_PER_PAGE
 from foodgram.utils import sum_ingredients
 from users.models import User, Follow
 
@@ -114,7 +115,7 @@ def subscriptions_index(request):
     user = request.user
     followed_authors = user.follower.select_related('author').order_by(
         '-author')
-    paginator = Paginator(followed_authors, 6)
+    paginator = Paginator(followed_authors, OBJECT_PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'myFollow.html',

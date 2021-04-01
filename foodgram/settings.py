@@ -11,6 +11,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
@@ -69,6 +70,7 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
+
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE'),
@@ -79,6 +81,9 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT'),
         }
     }
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -125,6 +130,7 @@ MEDIA_URL = '/media/'
 TAGGIT_CASE_INSENSITIVE = True
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login/'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
@@ -135,3 +141,5 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 _locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
 
 AUTH_USER_MODEL = 'users.User'
+
+OBJECT_PER_PAGE = 6
