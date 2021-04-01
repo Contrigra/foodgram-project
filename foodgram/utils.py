@@ -26,7 +26,7 @@ def obtain_recipes(request, received_tags):
         recipes = Recipe.objects.filter(
             tag__id__in=received_tags, author=author).distinct()
     # for favorites
-    if request.resolver_match.url_name == 'favorites':
+    elif request.resolver_match.url_name == 'favorites':
         User = get_user_model()
         user = User.objects.get(pk=request.user.id)
         recipes = user.favorites.recipes.all().filter(

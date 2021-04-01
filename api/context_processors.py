@@ -1,10 +1,12 @@
 from django.core.paginator import Paginator
+from django.utils.functional import SimpleLazyObject
 
 from api.models import TimeTag
 from foodgram.utils import get_filter_tags, get_url_with_tags, obtain_recipes
 
 
 def filtering(request):
+    # TODO make it work only on particular pages
     received_tags = get_filter_tags(request)
     url_tags_line = get_url_with_tags(request)
 
@@ -22,6 +24,7 @@ def filtering(request):
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+
 
     return {'request': request, 'page': page, 'recipes': recipes,
             'paginator': paginator,
