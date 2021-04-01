@@ -12,54 +12,16 @@ from foodgram.utils import sum_ingredients, get_filter_tags, \
 from users.models import User, Follow
 
 
-def index_view(request, tags: str = '123'):
-    """View which renders out the index page, parses tags and paginates data"""
+def index_view(request):
+    """View which renders out the index page"""
 
-    # received_tags = get_filter_tags(request)
-    # if received_tags is None:
-    #     recipes = Recipe.objects.all()
-    # else:
-    #     recipes = Recipe.objects.filter(
-    #         tag__id__in=received_tags).distinct()
-    #
-    # no_tags = get_tag_status(recipes)
-    #
-    # url_tags_line = get_url_with_tags(request)
-    # all_tags = TimeTag.objects.all()
-    #
-    # paginator = Paginator(recipes, 6)
-    # page_number = request.GET.get('page')
-    # page = paginator.get_page(page_number)
-    # data = {'page': page, 'recipes': recipes, 'paginator': paginator,
-    #         'tags': all_tags,
-    #         'received_tags': received_tags, 'url_tags_line': url_tags_line,
-    #         'no_tags': no_tags}
-
-    return render(request, 'index.html',
-                  )
+    return render(request, 'index.html' )
 
 
 def profile_view(request, slug):
     author = User.objects.get(username=slug)
-    received_tags = get_filter_tags(request)
 
-    if received_tags is None:
-        recipes = Recipe.objects.filter(author=author)
-    else:
-        recipes = Recipe.objects.filter(
-            tag__id__in=received_tags, author=author).distinct()
-
-    no_tags = get_tag_status(recipes)
-    url_tags_line = get_url_with_tags(request)
-    all_tags = TimeTag.objects.all()
-    paginator = Paginator(recipes, 6)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-
-    data = {'author': author, 'page': page, 'paginator': paginator,
-            'tags': all_tags,
-            'received_tags': received_tags,
-            'url_tags_line': url_tags_line, 'no_tags': no_tags}
+    data = {'author': author}
 
     if request.user.is_authenticated:
         subscribed = (request.user.follower.select_related('author').filter(
@@ -122,19 +84,6 @@ def shopping_list_download_view(request):
 
 @login_required
 def favorite_recipe_view(request):
-    received_tags = get_filter_tags(request)
-    user = User.objects.get(pk=request.user.id)
-
-    if received_tags is None:
-        recipes = user.favorites.recipes.all()
-    else:
-        recipes = user.favorites.recipes.all().filter(
-            tag__id__in=received_tags).distinct()
-
-    no_tags = get_tag_status(recipes)
-    url_tags_line = get_url_with_tags(request)
-    all_tags = TimeTag.objects.all()
-
     # adding new favourite
     if request.method == 'POST':
         recipe_id = request.body
@@ -147,17 +96,9 @@ def favorite_recipe_view(request):
         data = {'success': True}
         return JsonResponse(data)
 
-    user = User.objects.get(pk=request.user.id)
-    paginator = Paginator(recipes, 6)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
 
-    return render(request, 'recipe/recipe_favourites.html',
-                  {'page': page, 'recipes': recipes, 'paginator': paginator,
-                   'tags': all_tags,
-                   'received_tags': received_tags,
-                   'url_tags_line': url_tags_line,
-                   'no_tags': no_tags})
+
+    return render(request, 'recipe/recipe_favourites.html',)
 
 
 @login_required

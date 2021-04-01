@@ -1,6 +1,44 @@
 import itertools
 import operator
 
+from django.contrib.auth import get_user_model
+
+from api.models import Recipe
+
+
+def obtain_recipes(request, received_tags):
+    """
+    Parses request and returns a proper recipe list. There are three cases,
+    one is for index page, the second one is for profile pagem, and the third
+    one for favourites
+    :param request:
+    :param received_tags: A list of string tag PKs
+    :return: a recipes queryset
+    """
+    # for profile
+    try:
+        slug = request.resolver_match.kwargs['slug']
+    except KeyError:
+        slug = None
+    if slug is not None:
+        User = get_user_model()
+        author = User.objects.get(username=slug)
+        recipes = Recipe.objects.filter(
+            tag__id__in=received_tags, author=author).distinct()
+    # for favorites
+    if request.resolver_match.url_name == 'favorites':
+        User = get_user_model()
+        user = User.objects.get(pk=request.user.id)
+        recipes = user.favorites.recipes.all().filter(
+            tag__id__in=received_tags).distinct()
+    # for index
+    else:
+        recipes = Recipe.objects.filter(
+            tag__id__in=received_tags).distinct()
+
+
+    return recipes
+
 
 def sum_ingredients(ingredient_list):
     key = operator.itemgetter('ingredients__name', 'ingredients__units')
