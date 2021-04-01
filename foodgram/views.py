@@ -12,7 +12,8 @@ from users.models import User, Follow
 
 
 def index_view(request):
-    """View which renders out the index page"""
+    """Index page provides all recipes by default. Serving recipes
+    queryset is filtering job in context processors"""
 
     return render(request, 'index.html')
 
