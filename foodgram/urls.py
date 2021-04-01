@@ -26,7 +26,7 @@ urlpatterns = [
     path('subscriptions/<int:id>/unfollow/', views.unfollow_view,
          name='unfollow'),
 
-]
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

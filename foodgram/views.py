@@ -6,16 +6,15 @@ from django.http import JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from api.models import Recipe, TimeTag
-from foodgram.utils import sum_ingredients, get_filter_tags, \
-    get_url_with_tags, get_tag_status
+from api.models import Recipe
+from foodgram.utils import sum_ingredients
 from users.models import User, Follow
 
 
 def index_view(request):
     """View which renders out the index page"""
 
-    return render(request, 'index.html' )
+    return render(request, 'index.html')
 
 
 def profile_view(request, slug):
@@ -96,9 +95,7 @@ def favorite_recipe_view(request):
         data = {'success': True}
         return JsonResponse(data)
 
-
-
-    return render(request, 'recipe/recipe_favourites.html',)
+    return render(request, 'recipe/recipe_favourites.html', )
 
 
 @login_required

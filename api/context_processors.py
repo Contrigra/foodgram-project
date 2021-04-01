@@ -11,7 +11,6 @@ def filtering(request):
     if received_tags is None:
         received_tags = ['1', '2', '3']
 
-
     recipes = obtain_recipes(request, received_tags)
 
     url_tags_line = get_url_with_tags(request)

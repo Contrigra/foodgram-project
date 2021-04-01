@@ -36,7 +36,6 @@ def obtain_recipes(request, received_tags):
         recipes = Recipe.objects.filter(
             tag__id__in=received_tags).distinct()
 
-
     return recipes
 
 

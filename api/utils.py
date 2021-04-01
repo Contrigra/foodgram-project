@@ -29,7 +29,7 @@ def edit_RecipeIngredients(ingredients, recipe_pk):
     for elem in ingredients:
         ingredient = Ingredient.objects.get(name__exact=elem['name'])
         obj = RecipeIngredient(recipe_id=recipe_pk, value=elem['value'],
-                                   ingredient_id=ingredient.pk)
+                               ingredient_id=ingredient.pk)
         obj.save()
 
 
