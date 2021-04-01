@@ -12,31 +12,31 @@ from foodgram.utils import sum_ingredients, get_filter_tags, \
 from users.models import User, Follow
 
 
-def index_view(request):
+def index_view(request, tags: str = '123'):
     """View which renders out the index page, parses tags and paginates data"""
 
-    received_tags = get_filter_tags(request)
-    if received_tags is None:
-        recipes = Recipe.objects.all()
-    else:
-        recipes = Recipe.objects.filter(
-            tag__id__in=received_tags).distinct()
-
-    no_tags = get_tag_status(recipes)
-
-    url_tags_line = get_url_with_tags(request)
-    all_tags = TimeTag.objects.all()
-
-    paginator = Paginator(recipes, 6)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-    data = {'page': page, 'recipes': recipes, 'paginator': paginator,
-            'tags': all_tags,
-            'received_tags': received_tags, 'url_tags_line': url_tags_line,
-            'no_tags': no_tags}
+    # received_tags = get_filter_tags(request)
+    # if received_tags is None:
+    #     recipes = Recipe.objects.all()
+    # else:
+    #     recipes = Recipe.objects.filter(
+    #         tag__id__in=received_tags).distinct()
+    #
+    # no_tags = get_tag_status(recipes)
+    #
+    # url_tags_line = get_url_with_tags(request)
+    # all_tags = TimeTag.objects.all()
+    #
+    # paginator = Paginator(recipes, 6)
+    # page_number = request.GET.get('page')
+    # page = paginator.get_page(page_number)
+    # data = {'page': page, 'recipes': recipes, 'paginator': paginator,
+    #         'tags': all_tags,
+    #         'received_tags': received_tags, 'url_tags_line': url_tags_line,
+    #         'no_tags': no_tags}
 
     return render(request, 'index.html',
-                  data)
+                  )
 
 
 def profile_view(request, slug):
