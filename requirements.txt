@@ -61,7 +61,7 @@ pycodestyle==2.6.0
 pycparser==2.20
 pyflakes==2.2.0
 PyGetWindow==0.0.8
-Pygments==2.7.2
+Pygments==2.7.4
 PyInstaller==3.6
 PyJWT==1.7.1
 pylint==2.5.3
