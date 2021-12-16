@@ -143,3 +143,5 @@ _locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
 AUTH_USER_MODEL = 'users.User'
 
 OBJECT_PER_PAGE = 6
+
+# Comment to trick github
