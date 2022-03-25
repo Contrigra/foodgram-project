@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 1.txt
+TODO.txt
 # Distribution / packaging
 .Python
 build/
