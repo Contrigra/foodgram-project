@@ -113,7 +113,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-SITE_ID = os.environ.get('SITE_ID')
+SITE_ID = int(os.environ.get('SITE_ID'))
 
 if DEBUG:
     STATICFILES_DIRS = [
