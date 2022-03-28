@@ -144,4 +144,4 @@ AUTH_USER_MODEL = 'users.User'
 
 OBJECT_PER_PAGE = 6
 
-# Comment to trick github
+CSRF_TRUSTED_ORIGINS = ['https://84.201.140.229']
