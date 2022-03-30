@@ -3,8 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from slugify import slugify
-
+from django.utils.text import slugify
+from unidecode import unidecode
 from api.models import Ingredient, Recipe, RecipeIngredient
 from users.models import User
 from .forms import RecipeForm
@@ -34,7 +34,9 @@ def create_recipe_view(request):
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = request.user
-            recipe.slug = slugify(recipe.title)
+
+            # Django slugify does not translate unicode to ascii
+            recipe.slug = slugify(unidecode(recipe.title))
             recipe.save()
             form.save_m2m()
             # due to intermediary model for many-to-many relationship of a
@@ -125,7 +127,7 @@ def recipe_edit_view(request, slug):
                            ValidationError(
                                'Требуется хотя бы один ингредиент'))
         if form.is_valid():
-
+            # TODO fix, probably can't call delete on a separate queryset, have to pass arguements directly probably
             current_recipe_ingredients.delete()
             current_recipe_tags.delete()
 
