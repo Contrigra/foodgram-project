@@ -118,7 +118,6 @@ def recipe_edit_view(request, slug):
                       instance=recipe)
 
     current_recipe_ingredients = RecipeIngredient.objects.filter(recipe=recipe)
-    current_recipe_tags = recipe.tag.all()
     tags = get_tag_list(form)
     if request.method == "POST":
         ingredients = get_ingredients(request.POST)
@@ -127,13 +126,13 @@ def recipe_edit_view(request, slug):
                            ValidationError(
                                'Требуется хотя бы один ингредиент'))
         if form.is_valid():
-            # TODO fix, probably can't call delete on a separate queryset, have to pass arguements directly probably
+
             current_recipe_ingredients.delete()
-            current_recipe_tags.delete()
+            recipe.tag.clear()
 
             recipe = form.save(commit=False)
             recipe.author = request.user
-            recipe.slug = slugify(recipe.title)
+            recipe.slug = slugify(unidecode(recipe.title))
             recipe.save()
             form.save_m2m()
 

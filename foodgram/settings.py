@@ -9,8 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
-
+DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
@@ -70,7 +69,6 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE'),
@@ -81,9 +79,6 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT'),
         }
     }
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -144,4 +139,4 @@ AUTH_USER_MODEL = 'users.User'
 
 OBJECT_PER_PAGE = 6
 
-# CSRF_TRUSTED_ORIGINS = ['https://84.201.140.229', 'http://84.201.140.229']
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
