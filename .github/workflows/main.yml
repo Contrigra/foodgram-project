@@ -22,7 +22,6 @@ jobs:
           pip install flake8
           pip install -r requirements.txt
 
-
       - name: Lint with flake8
         run: flake8 .
 
@@ -66,7 +65,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
-          source: "./.env,nginx/nginx.conf,./docker-compose.yaml,./static"
+          source: "./static"
           target: "/home/contrigra/code"
 
       - name: executing remote ssh commands to deploy
@@ -81,5 +80,3 @@ jobs:
             cd ./code
             sudo docker pull contrigra/foodgram:latest
             sudo docker-compose up --force-recreate -d web
-
-
